@@ -1,3 +1,15 @@
+"""Root Assistant Configuration Module
+
+This module defines the root assistant that serves as the primary entry point
+for customer interactions. The root assistant is responsible for:
+1. Initial customer greeting and inquiry handling
+2. Routing requests to appropriate specialized assistants
+3. Managing conversation flow and closure
+
+The root assistant maintains a professional tone while keeping responses concise
+and suitable for voice interactions.
+"""
+
 root_assistant = {
     "id": "Assistant_RootAssistant",
     "name": "Greeter",

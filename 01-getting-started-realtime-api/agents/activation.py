@@ -1,7 +1,40 @@
+"""Service Activation Assistant Module
+
+This module defines the activation assistant and its supporting functions for managing
+service activation requests. The assistant handles various types of service activations
+including:
+- Mobile Internet
+- All-in-One Bundle
+- Home Internet
+- Additional Mobile Data
+- Replacement SIM Card
+
+The module includes:
+1. A function to queue service activation requests
+2. Configuration for the activation assistant including its behavior and tools
+3. Secure handling of customer information and service activation workflows
+"""
+
 import os
 import requests
+
 LOGIC_APP_URL = os.getenv("LOGIC_APPS_URL")
+
 def queue_service_activation(input):
+    """Queue a service activation request for processing.
+    
+    This function sends the activation request to a Logic App endpoint for processing.
+    If no Logic App URL is configured, the function will still return a success message
+    for testing purposes.
+    
+    Args:
+        input (dict): Service activation details including:
+            - service_sku: The SKU of the service to activate
+            - customer: Customer details including full name
+            
+    Returns:
+        str: A confirmation message indicating the request has been queued
+    """
     if LOGIC_APP_URL is not None and LOGIC_APP_URL != "":
         requests.post(LOGIC_APP_URL, json=input)
     return f"Service activation request for {input['service_sku']} queued for {input['customer']['full_name']}"
