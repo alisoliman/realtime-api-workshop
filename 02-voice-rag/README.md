@@ -12,7 +12,7 @@ In this exercise, you will implement a RAG (Retrieval Augmented Generation) solu
 - Azure AI Search
 - Azure Blob Storage
 
-- Development environment (_or leverage the preconfigured VSCode Dev Container)
+- Development environment (_or leverage the preconfigured VSCode Dev Container_)
     - Python 3.11
     - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) (optional, needed for identity based authentication)
     - Node.js
@@ -69,7 +69,7 @@ git clone https://github.com/Azure-Samples/aisearch-openai-rag-audio.git
 
 ### Configure the environment
 
-Key based vs identity based authentication
+TODO explain key based vs identity based authentication
 
 #### Key based authentication
 
@@ -79,14 +79,14 @@ Login to your Azure account and select your subscription.
 
 ```az login```
 
-Make sure 
-
+TODO document which rights an user need
 
 ## Troubleshooting
 - [TODO document common mistakes]
 
-
 ### Run the solution
+
+TODO explain how to run the scripts on Windows / Linux
 
 Now you can navigate to url and start using the solution.
 
