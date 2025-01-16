@@ -31,7 +31,7 @@ In this step we will generate a vector index based on your own documents. If you
 1. Select your Azure OpenAI service and the embedding model you want to use.
 1. Don't select "Vectorize images" and "Extract text from images" for this exercise.
 1. Optionally you can change the schedule to your own preference, or leave it at "Once".
-1. Give your vector store a meaning full name and select the "Create" button.
+1. Change the name of your vector store to reflect your documents and select the "Create" button. Store the name of this vector store, as you will need this later.
 
 After a few minutes, your index will be populated with chunks and vectors from your documents. 
 
@@ -44,20 +44,28 @@ After a few minutes, your index will be populated with chunks and vectors from y
 
 Now we have a preconfigured Azure AI Search index, we can run the VoiceRAG sample. In this exercise we will run the sample locally, but you can also deploy it to Azure in a later stage.
 
-### Setup your develpoment environment
+### Setup your development environment
 
-GitHub Codespaces?
+The easiest way to setup your development environment is to leverage the provided VSCode Dev Container. This container is preconfigured with all the necessary tools and dependencies to run the sample. You can run this Dev Container locally in VSCode or in GitHub Codespaces.
+
+#### GitHub Codespaces
+
+TODO
+
+#### Local (DevContainer)
+
+TODO
+
+
+#### Local (Manual)
+
+1. Make sure you meet the prerequisites mentinoed earlier.
 
 1. Clone the repository
 
 ```bash
 git clone https://github.com/Azure-Samples/aisearch-openai-rag-audio.git
 ```
-
-1. Open the folder in VSCode, GitHub CodeSpaces or any other preferred development enviroment. 
-
-1. [explain devcontainers]
-
 
 ### Configure the environment
 
@@ -67,25 +75,24 @@ Key based vs identity based authentication
 
 #### Identity based authentication
 
+Login to your Azure account and select your subscription.
+
+```az login```
+
+Make sure 
 
 
-## Tips and Tricks
-
-- Leverage the provided devcontainer
-
-[TODO document common made mistakes]
-
-
-TODO Highlight why grounding is more difficult in voice.
+## Troubleshooting
+- [TODO document common mistakes]
 
 
 ### Run the solution
 
-
 Now you can navigate to url and start using the solution.
 
-
 ### Advanced
+
+If you have more time bla bla
 
 ## Prompt Engineering
 
@@ -93,3 +100,12 @@ Change voice.
 In this part of the workshop we will tweak the prompt for the VoiceRAG model.
 
 1. Navigate
+
+### Function calling
+
+Exercise to change the function calling
+
+TODO Highlight why grounding is more difficult in voice.
+
+
+
