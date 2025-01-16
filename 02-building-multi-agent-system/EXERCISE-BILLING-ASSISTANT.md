@@ -239,8 +239,3 @@ After completing this exercise, explore:
 - Adding support for different payment providers
 - Enhancing security measures
 - Improving voice interaction patterns
-
-## Resources
-- [Voice Design Best Practices](https://example.com)
-- [Billing System Integration Patterns](https://example.com)
-- [Security in Financial Systems](https://example.com)
