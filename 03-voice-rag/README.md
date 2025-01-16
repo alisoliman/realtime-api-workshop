@@ -11,12 +11,11 @@ In this exercise, you will implement a RAG (Retrieval Augmented Generation) solu
     - Embedding model: text-embeddings-ada-002 or text-embedding-003-large/text-embedding-003-small
 - Azure AI Search
 - Azure Blob Storage
-
 - Development environment (_or leverage the preconfigured VSCode Dev Container_)
     - Python 3.11
-    - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) (optional, needed for identity based authentication)
     - Node.js
     - Git
+    - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) (optional, needed for identity based authentication)
 
 ## Create an Azure AI Search index 
 
