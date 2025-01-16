@@ -16,28 +16,24 @@ The module includes:
 """
 
 import os
-import requests
 
-LOGIC_APP_URL = os.getenv("LOGIC_APPS_URL")
 
 def queue_service_activation(input):
     """Queue a service activation request for processing.
-    
-    This function sends the activation request to a Logic App endpoint for processing.
-    If no Logic App URL is configured, the function will still return a success message
-    for testing purposes.
-    
+
+    This function simulates queueing a service activation request.
+    It returns a success message for testing purposes.
+
     Args:
         input (dict): Service activation details including:
             - service_sku: The SKU of the service to activate
             - customer: Customer details including full name
-            
+
     Returns:
         str: A confirmation message indicating the request has been queued
     """
-    if LOGIC_APP_URL is not None and LOGIC_APP_URL != "":
-        requests.post(LOGIC_APP_URL, json=input)
     return f"Service activation request for {input['service_sku']} queued for {input['customer']['full_name']}"
+
 
 activation_assistant = {
     "id": "Assistant_ActivationAssistant",
@@ -79,16 +75,31 @@ activation_assistant = {
                         "type": "object",
                         "description": "Customer information",
                         "properties": {
-                            "full_name": {"type": "string", "description": "Customer's full name"},
-                            "email": {"type": "string", "description": "Customer's email address"},
-                            "phone": {"type": "string", "description": "Customer's phone number"},
-                            "address": {"type": "string", "description": "Customer's home address"},
+                            "full_name": {
+                                "type": "string",
+                                "description": "Customer's full name",
+                            },
+                            "email": {
+                                "type": "string",
+                                "description": "Customer's email address",
+                            },
+                            "phone": {
+                                "type": "string",
+                                "description": "Customer's phone number",
+                            },
+                            "address": {
+                                "type": "string",
+                                "description": "Customer's home address",
+                            },
                         },
                     },
-                    "tcAccepted": {"type": "boolean", "description": "Terms and conditions accepted"},
+                    "tcAccepted": {
+                        "type": "boolean",
+                        "description": "Terms and conditions accepted",
+                    },
                 },
             },
-            "returns": queue_service_activation
+            "returns": queue_service_activation,
         },
     ],
 }

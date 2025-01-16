@@ -4,12 +4,13 @@ This module defines the billing assistant and its supporting functions for manag
 billing inquiries and payment-related operations.
 """
 
+
 def fetch_billing_details(input):
     """Retrieve billing details for a customer.
-    
+
     Args:
         input (dict): Contains customerCode for identifying the customer
-        
+
     Returns:
         dict: Customer's billing information including balance and due date
     """
@@ -17,15 +18,16 @@ def fetch_billing_details(input):
     return {
         "balance": 45.75,
         "due_date": "2025-02-01",
-        "latest_charges": "Monthly service fee of €30, plus a €15 phone accessory charge, plus taxes and fees."
+        "latest_charges": "Monthly service fee of €30, plus a €15 phone accessory charge, plus taxes and fees.",
     }
+
 
 def fetch_payment_history(input):
     """Retrieve payment history for a customer.
-    
+
     Args:
         input (dict): Contains customerCode for identifying the customer
-        
+
     Returns:
         list: List of recent payment transactions
     """
@@ -35,17 +37,19 @@ def fetch_payment_history(input):
         {"date": "2024-11-20", "amount": 30.00, "method": "Credit Card"},
     ]
 
+
 def update_payment_method(input):
     """Update a customer's payment method.
-    
+
     Args:
         input (dict): Contains customerCode and new payment method details
-        
+
     Returns:
         str: Confirmation message of the update
     """
     # In a real implementation, this would update the payment system
     return f"Payment method updated to {input['paymentMethod']} for customer {input['customerCode']}"
+
 
 billing_assistant = {
     "id": "Assistant_BillingAssistant",
@@ -83,11 +87,11 @@ billing_assistant = {
                 "properties": {
                     "customerCode": {
                         "type": "string",
-                        "description": "Unique identifier for the customer to fetch billing info."
+                        "description": "Unique identifier for the customer to fetch billing info.",
                     }
-                }
+                },
             },
-            "returns": fetch_billing_details
+            "returns": fetch_billing_details,
         },
         {
             "name": "fetch_payment_history",
@@ -97,11 +101,11 @@ billing_assistant = {
                 "properties": {
                     "customerCode": {
                         "type": "string",
-                        "description": "Unique identifier for the customer to fetch their payment history."
+                        "description": "Unique identifier for the customer to fetch their payment history.",
                     }
-                }
+                },
             },
-            "returns": fetch_payment_history
+            "returns": fetch_payment_history,
         },
         {
             "name": "update_payment_method",
@@ -111,15 +115,15 @@ billing_assistant = {
                 "properties": {
                     "customerCode": {
                         "type": "string",
-                        "description": "Unique identifier for the customer to update payment method."
+                        "description": "Unique identifier for the customer to update payment method.",
                     },
                     "paymentMethod": {
                         "type": "string",
-                        "description": "New payment method details (e.g., 'Visa ending in 1234')."
-                    }
-                }
+                        "description": "New payment method details (e.g., 'Visa ending in 1234').",
+                    },
+                },
             },
-            "returns": update_payment_method
-        }
-    ]
+            "returns": update_payment_method,
+        },
+    ],
 }

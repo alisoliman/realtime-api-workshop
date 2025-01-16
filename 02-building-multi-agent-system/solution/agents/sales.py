@@ -40,5 +40,5 @@ sales_assistant = {
         - Price: €3 per 5GB
         - Details: Purchase additional data for your mobile internet.
         - _SKU: INET_MOBILE_DATA_ADD""",
-    "tools": []
+    "tools": [],
 }

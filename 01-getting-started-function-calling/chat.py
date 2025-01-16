@@ -6,6 +6,7 @@ from chainlit.logger import logger
 
 from realtime2 import RealtimeClient
 from dotenv import load_dotenv
+
 load_dotenv(override=True)
 
 # Define our main assistant
@@ -46,13 +47,13 @@ main_assistant = {
                 "properties": {
                     "customer_id": {"type": "string", "description": "Customer's ID"},
                 },
-                "required": ["customer_id"]
+                "required": ["customer_id"],
             },
             "returns": lambda input: {
                 "current_usage": "80GB",
                 "limit": "100GB",
-                "status": "ACTIVE"
-            }
+                "status": "ACTIVE",
+            },
         },
         {
             "name": "check_service_status",
@@ -60,17 +61,25 @@ main_assistant = {
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "service": {"type": "string", "description": "Service to check (internet, mobile)"},
+                    "service": {
+                        "type": "string",
+                        "description": "Service to check (internet, mobile)",
+                    },
                 },
-                "required": ["service"]
+                "required": ["service"],
             },
             "returns": lambda input: {
                 "status": "OK" if input["service"] == "mobile" else "DEGRADED",
-                "details": "No issues reported" if input["service"] == "mobile" else "Maintenance in progress"
-            }
-        }
-    ]
+                "details": (
+                    "No issues reported"
+                    if input["service"] == "mobile"
+                    else "Maintenance in progress"
+                ),
+            },
+        },
+    ],
 }
+
 
 async def setup_openai_realtime():
     """Initialize and configure the OpenAI Realtime Client with event handlers."""
@@ -82,19 +91,19 @@ async def setup_openai_realtime():
         """Handle real-time updates to the conversation."""
         item = event.get("item")
         delta = event.get("delta")
-        
+
         if event:
             if "input_audio_transcription" in item["type"]:
                 msg = cl.Message(content=delta["transcript"], author="user")
                 msg.type = "user_message"
                 await msg.send()
         if delta:
-            if 'audio' in delta:
+            if "audio" in delta:
                 await cl.context.emitter.send_audio_chunk(
                     cl.OutputAudioChunk(
-                        mimeType="pcm16", 
-                        data=delta['audio'], 
-                        track=cl.user_session.get("track_id")
+                        mimeType="pcm16",
+                        data=delta["audio"],
+                        track=cl.user_session.get("track_id"),
                     )
                 )
 
@@ -115,10 +124,10 @@ async def setup_openai_realtime():
         logger.error(event)
 
     # Register event handlers
-    openai_realtime.on('conversation.updated', handle_conversation_updated)
-    openai_realtime.on('conversation.item.completed', handle_item_completed)
-    openai_realtime.on('conversation.interrupted', handle_conversation_interrupt)
-    openai_realtime.on('error', handle_error)
+    openai_realtime.on("conversation.updated", handle_conversation_updated)
+    openai_realtime.on("conversation.item.completed", handle_item_completed)
+    openai_realtime.on("conversation.interrupted", handle_conversation_interrupt)
+    openai_realtime.on("error", handle_error)
 
     # Register our main assistant
     openai_realtime.assistant.register_agent(main_assistant)
@@ -138,9 +147,13 @@ async def on_message(message: cl.Message):
     """Process incoming chat messages."""
     openai_realtime: RealtimeClient = cl.user_session.get("openai_realtime")
     if openai_realtime and openai_realtime.is_connected():
-        await openai_realtime.send_user_message_content([{"type": 'input_text', "text": message.content}])
+        await openai_realtime.send_user_message_content(
+            [{"type": "input_text", "text": message.content}]
+        )
     else:
-        await cl.Message(content="Please activate voice mode before sending messages!").send()
+        await cl.Message(
+            content="Please activate voice mode before sending messages!"
+        ).send()
 
 
 @cl.on_audio_start
@@ -152,7 +165,9 @@ async def on_audio_start():
         logger.info("Connected to OpenAI realtime")
         return True
     except Exception as e:
-        await cl.ErrorMessage(content=f"Failed to connect to OpenAI realtime: {e}").send()
+        await cl.ErrorMessage(
+            content=f"Failed to connect to OpenAI realtime: {e}"
+        ).send()
         return False
 
 

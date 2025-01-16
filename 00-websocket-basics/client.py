@@ -7,6 +7,7 @@ import datetime
 import argparse
 from typing import Optional
 
+
 class WebSocketClient:
     def __init__(self, uri: str = "ws://localhost:8765"):
         self.uri = uri
@@ -18,7 +19,7 @@ class WebSocketClient:
             while True:
                 message = await self.websocket.recv()
                 data = json.loads(message)
-                
+
                 # Pretty print different message types
                 if data["type"] == "welcome":
                     print(f"\n🎉 {data['message']}")
@@ -30,7 +31,7 @@ class WebSocketClient:
                     pass
                 elif data["type"] == "error":
                     print(f"\n❌ Error: {data['message']}")
-                
+
         except websockets.exceptions.ConnectionClosed:
             print("\n❌ Connection to server closed")
         except Exception as e:
@@ -41,7 +42,7 @@ class WebSocketClient:
         try:
             data = {
                 "message": message,
-                "timestamp": datetime.datetime.now().isoformat()
+                "timestamp": datetime.datetime.now().isoformat(),
             }
             await self.websocket.send(json.dumps(data))
             print(f"\n📤 Sent: {message}")
@@ -55,10 +56,10 @@ class WebSocketClient:
                 self.websocket = websocket
                 print(f"🔌 Connected to {self.uri}")
                 print("📝 Type your messages (press Ctrl+C to exit)")
-                
+
                 # Start receiving messages in the background
                 receive_task = asyncio.create_task(self.receive_messages())
-                
+
                 while True:
                     try:
                         message = await asyncio.get_event_loop().run_in_executor(
@@ -69,22 +70,23 @@ class WebSocketClient:
                     except KeyboardInterrupt:
                         print("\n👋 Goodbye!")
                         break
-                    
+
                 receive_task.cancel()
                 try:
                     await receive_task
                 except asyncio.CancelledError:
                     pass
-                
+
         except Exception as e:
             print(f"❌ Connection error: {str(e)}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="WebSocket Client Example")
     parser.add_argument(
-        "--uri", 
+        "--uri",
         default="ws://localhost:8765",
-        help="WebSocket server URI (default: ws://localhost:8765)"
+        help="WebSocket server URI (default: ws://localhost:8765)",
     )
     args = parser.parse_args()
 
@@ -93,6 +95,7 @@ def main():
         asyncio.run(client.interactive_session())
     except KeyboardInterrupt:
         print("\n👋 Goodbye!")
+
 
 if __name__ == "__main__":
     main()
