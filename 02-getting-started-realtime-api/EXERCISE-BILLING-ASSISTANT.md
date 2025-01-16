@@ -1,19 +1,61 @@
 # Exercise: Adding a Billing Assistant
 
-In this exercise, you'll learn how to extend the Realtime API system by adding a new specialized assistant that handles billing and payment inquiries. This will demonstrate how to:
-1. Create a new assistant configuration
-2. Add custom tools for the assistant
-3. Integrate the assistant with the existing system
+In this exercise, you'll extend the Realtime API system by adding a specialized assistant that handles billing and payment inquiries. You will:
+1. Create a new assistant configuration  
+2. Add custom tools for the assistant  
+3. Integrate the assistant with the existing system  
+
+---
 
 ## Exercise Goals
-- Understand how to create and configure a new assistant
-- Learn how to implement custom tools with mock data
-- Practice integrating new functionality into the existing assistant network
+- Learn how to create and configure a new assistant  
+- Implement custom tools with mock data  
+- Integrate the new billing functionality into your existing assistant network  
+
+---
 
 ## Step-by-Step Guide
 
 ### 1. Create the Billing Assistant File
-Create a new file `billing.py` in the `agents` directory. The implementation requires three main components:
+In the `agents` directory, create a new file `billing.py` with three key parts:
+
+#### Tool Functions
+
+```python
+def fetch_billing_details(input):
+    """Retrieve billing details for a customer.
+    
+    Args:
+        input (dict): Contains 'customerCode' to identify the customer.
+        
+    Returns:
+        dict: Customer's billing information including balance and due date.
+    """
+    return {
+        "balance": 45.75,
+        "due_date": "2025-02-01",
+        
+        "latest_charges": "Monthly service fee of €30, plus a €15 phone accessory charge, plus taxes and fees."
+    }
+
+def fetch_payment_history(input):
+    """Retrieve payment history for a customer."""
+    return [
+        {"date": "2024-12-20", "amount": 50.00, "method": "Credit Card"},
+        {"date": "2024-11-20", "amount": 30.00, "method": "Credit Card"},
+    ]
+
+def update_payment_method(input):
+    """Update a customer's payment method."""
+    return f"Payment method updated to {input['paymentMethod']} for customer {input['customerCode']}"
+
+```
+
+
+
+
+
+
 
 1. Tool Functions:
 ```python
@@ -99,7 +141,7 @@ openai_realtime.assistant.register_root_agent(root_assistant)
 ### 3. Test the Integration
 1. Start your chat application:
    ```bash
-   chainlit run chat.py
+   uv run chainlit run chat.py
    ```
 
 2. Try these test conversations:
