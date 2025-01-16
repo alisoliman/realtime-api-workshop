@@ -70,6 +70,7 @@ git clone https://github.com/Azure-Samples/aisearch-openai-rag-audio.git
 ### Configure the environment
 
 TODO explain key based vs identity based authentication
+TODO explain .env creation
 
 #### Key based authentication
 
@@ -96,16 +97,17 @@ If you have more time bla bla
 
 ## Prompt Engineering
 
-Change voice.
-In this part of the workshop we will tweak the prompt for the VoiceRAG model.
+In this part of the workshop we will tweak the prompt for the VoiceRAG model. The default prompt is very basic, and we can improve the grounding and behavior by adding more context to the prompt. Due to nature of the model, you can also tune the voice by changing the prompt.
 
-1. Navigate
+1. TODO: grounding tips
+1. TODO: Change the voice to reflect your brand. Prompt engineering.
 
 ### Function calling
 
-Exercise to change the function calling
+Exercise to improve the function calling. Explain how it currently works.
 
 TODO Highlight why grounding is more difficult in voice.
+TODO add concrete examples
 
 
 
