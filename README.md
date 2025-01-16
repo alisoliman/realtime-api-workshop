@@ -4,7 +4,7 @@ A hands-on workshop for building voice-enabled AI assistants using OpenAI's Real
 
 ## Project Overview
 
-This workshop consists of three progressive modules, each building upon the previous one to create a comprehensive understanding of AI assistant development:
+This workshop consists of four progressive modules, each building upon the previous one to create a comprehensive understanding of AI assistant development:
 
 ### 00-websocket-basics
 An introduction to WebSocket communication, providing the foundation for real-time interactions. This module covers:
@@ -19,15 +19,21 @@ Introduction to Azure OpenAI's Realtime API with function calling capabilities:
 - Handling assistant responses
 - Basic conversation management
 
-### 02-getting-started-realtime-api
+### 02-building-multi-agent-system
 The main workshop module implementing a complete telecom customer service system:
 - Multiple specialized AI assistants (Technical, Sales, Activation)
 - Inter-assistant communication and routing
 - Voice-optimized responses
 - Mock backend service integration
 
+### 03-voice-rag
+Advanced module focusing on voice-enabled Retrieval Augmented Generation:
+- Voice-optimized RAG implementation
+- Document retrieval and context management
+- Natural conversation flow with document references
+
 #### Workshop Exercises
-1. [Building a Billing Assistant](./02-getting-started-realtime-api/EXERCISE-BILLING-ASSISTANT.md) - Create a specialized assistant for handling billing inquiries
+1. [Building a Billing Assistant](./02-building-multi-agent-system/EXERCISE-BILLING-ASSISTANT.md) - Create a specialized assistant for handling billing inquiries
 
 ## Getting Started
 
@@ -42,7 +48,7 @@ The main workshop module implementing a complete telecom customer service system
 The fastest way to run the project is using uv directly:
 ```bash
 # Navigate to the desired module
-cd 02-getting-started-realtime-api
+cd 02-building-multi-agent-system
 
 # Run the chat application
 uv run chainlit run chat.py
@@ -79,9 +85,9 @@ realtime-api-workshop/
 ├── 01-getting-started-function-calling/  # Function calling basics
 │   ├── assistant_service.py      # Basic assistant implementation
 │   ├── chat.py                   # Chat interface
-│   └── requirements.txt          # Module-specific dependencies
+│   └── workshop.md               # Module guide and instructions
 │
-├── 02-getting-started-realtime-api/      # Main workshop content
+├── 02-building-multi-agent-system/      # Multi-agent implementation
 │   ├── agents/                   # Specialized AI assistants
 │   │   ├── activation.py         # Service activation assistant
 │   │   ├── billing.py           # Billing assistant
@@ -92,6 +98,9 @@ realtime-api-workshop/
 │   ├── assistant_service.py      # Enhanced assistant service
 │   ├── chat.py                   # Main chat application
 │   └── EXERCISE-BILLING-ASSISTANT.md  # Billing assistant exercise
+│
+├── 03-voice-rag/                 # Voice-enabled RAG implementation
+│   └── workshop.md               # Module guide and instructions
 │
 └── requirements.txt              # Global project dependencies
 ```
@@ -108,7 +117,3 @@ We welcome contributions! Please feel free to submit pull requests with improvem
 ## TODO
 
 - [ ] Add requirements.txt as an alternative for uv
-- [ ] Position chainlit as a dev tool
-- [ ] Add more exercises and examples
-- [ ] Enhance documentation with best practices
-- [ ] Add testing guidelines
