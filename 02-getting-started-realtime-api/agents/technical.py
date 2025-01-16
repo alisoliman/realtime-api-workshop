@@ -18,8 +18,8 @@ technical_assistant = {
 	
 	Your task are:
 	- Assess the technical issue the customer is facing.
-	- Verify if there any known issues with the service the customer is using.
-	- Check remote telemetry data to identify potential issues with customer's device. Be sure to ask customer code first.
+	- Verify if there are any known issues with the service the customer is using.
+	- Check remote telemetry data to identify potential issues with the customer's device. Be sure to ask customer code first.
 	- Provide the customer with possible solutions to the issue. See the list of common issues below.
 	- When the service status is OK, reply the customer and suggest to restart the device.
 	- When the service status is DEGRADED, apologize to the customer and kindly ask them to wait for the issue to be resolved.
