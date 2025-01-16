@@ -1,7 +1,7 @@
 technical_assistant = {
-	"id": "Assistant_TechnicalAssistant",
-	"name": "Technical Support",
-	"description": """Call this if:
+    "id": "Assistant_TechnicalAssistant",
+    "name": "Technical Support",
+    "description": """Call this if:
 		- You need to solve technical issues.
 		- You need to check the service status.
 		- You need to check the customer's telemetry data.
@@ -11,7 +11,7 @@ technical_assistant = {
 		- You need to respond to commercial inquiries.
 		- You need to activate a service the customer purchased.
 		- You need to end the conversation with the customer.""",
-	"system_message": """
+    "system_message": """
 	You are a technical support agent that responds to customer inquiries.
 	You are responsible for providing technical support to customers who are facing issues with their services.
 	Keep sentences short and simple, suitable for a voice conversation, so it's *super* important that answers are as short as possible. Use professional language.
@@ -50,29 +50,50 @@ technical_assistant = {
 			- Send an SMS with three starts (***) and check if the device returns an error code.
 			- If this tests fails, explain the customer they will need to replace the SIM card and route to the Activation to queue the SIM card replacement.
 	""",
-	"tools": [
-		{
-			"name": "check_customer_telemetry",
-			"description": "Check the customer's telemetry data.",
-			"parameters": {
-				"type": "object",
-				"properties": {
-					"service": {"type": "string", "description": "service to check between INET_HOME and INET_MOBILE"},
-					"customerCode": {"type": "string", "description": "customer Code to check"},
-				},
-			},
-			"returns": lambda input: "Router offline" if input["service"] == "INET_HOME" else "Monthly data usage exceeded the limit. Suggest the customer to purchase additional data." if input["service"] == "INET_MOBILE" else "UNKNOWN service",
-		},
-		{
-			"name": "check_service_status",
-			"description": "Check the customer's telemetry data.",
-			"parameters": {
-				"type": "object",
-				"properties": {
-					"service": {"type": "string", "description": "service to check between INET_HOME and INET_MOBILE"},
-				},
-			},
-			"returns": lambda input: "DEGRADED" if input["service"] == "INET_HOME" else "OK" if input["service"] == "INET_MOBILE" else "UNKNOWN",
-		},
-	],
+    "tools": [
+        {
+            "name": "check_customer_telemetry",
+            "description": "Check the customer's telemetry data.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "service": {
+                        "type": "string",
+                        "description": "service to check between INET_HOME and INET_MOBILE",
+                    },
+                    "customerCode": {
+                        "type": "string",
+                        "description": "customer Code to check",
+                    },
+                },
+            },
+            "returns": lambda input: (
+                "Router offline"
+                if input["service"] == "INET_HOME"
+                else (
+                    "Monthly data usage exceeded the limit. Suggest the customer to purchase additional data."
+                    if input["service"] == "INET_MOBILE"
+                    else "UNKNOWN service"
+                )
+            ),
+        },
+        {
+            "name": "check_service_status",
+            "description": "Check the customer's telemetry data.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "service": {
+                        "type": "string",
+                        "description": "service to check between INET_HOME and INET_MOBILE",
+                    },
+                },
+            },
+            "returns": lambda input: (
+                "DEGRADED"
+                if input["service"] == "INET_HOME"
+                else "OK" if input["service"] == "INET_MOBILE" else "UNKNOWN"
+            ),
+        },
+    ],
 }
