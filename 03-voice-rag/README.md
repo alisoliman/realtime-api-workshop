@@ -34,8 +34,8 @@ In this step we will generate a vector index based on your own documents. If you
 
 After a few minutes, your index will be populated with chunks and vectors from your documents. 
 
-1. Go back to the main page of your Azure AI Search solution.
-1. Copy and store the URL of your AI Search solution, you will need this later.
+1. Go back to the main page of your Azure AI Search.
+1. Copy and store the URL of your AI Search, you will need this later.
 1. If you want to leverage key based authentication, navigate to "Settings -> Keys". Create a new query key and copy and store this value.
 1. If you want to leverage user identity authentication, navigate to "Access control (IAM)" and add your user to the "Search Service Contributor" role.
 
