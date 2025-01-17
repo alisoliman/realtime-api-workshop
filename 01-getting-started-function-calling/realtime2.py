@@ -105,7 +105,7 @@ class RealtimeAPI(RealtimeEventHandler):
         super().__init__()
         self.default_url = "wss://api.openai.com/v1/realtime"
         self.url = os.environ["AZURE_OPENAI_ENDPOINT"]
-        self.api_key = os.environ["AZURE_OPENAI_API_KEY"]
+        self.api_key = os.getenv("AZURE_OPENAI_API_KEY", "")
         self.credentials = DefaultAzureCredential()
         self.acquire_token = get_bearer_token_provider(
             self.credentials, "https://cognitiveservices.azure.com/.default"
