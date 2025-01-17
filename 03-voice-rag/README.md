@@ -120,7 +120,7 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=default
    pwsh .\scripts\start.ps1
    ```
 
-   Linux/Mac:
+   Linux/Mac/DevContainer/GitHub CodeSpaces:
 
    ```bash
    ./scripts/start.sh
