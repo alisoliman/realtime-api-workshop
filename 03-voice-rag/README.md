@@ -109,7 +109,7 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=default
     
 
     > [!IMPORTANT]
-    >In order to use identity based authentication, you should grant your user the "Search Service Contributor" role in the Azure AI Search service and the "OpenAI Contributor" role in the Azure OpenAI service. 
+    > In order to use identity based authentication, you should grant your user the "Search Service Contributor" role in the Azure AI Search service and the "OpenAI Contributor" role in the Azure OpenAI service. 
 
 ### Run the solution
 
