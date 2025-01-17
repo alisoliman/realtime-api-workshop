@@ -107,15 +107,29 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=default
     az login
     ```
     
-
     > [!IMPORTANT]
     > In order to use identity based authentication, you should grant your user the "Search Service Contributor" role in the Azure AI Search service and the "OpenAI Contributor" role in the Azure OpenAI service. 
 
 ### Run the solution
 
-TODO explain how to run the scripts on Windows / Linux
+1. Run this command to start the app:
 
-Now you can navigate to url and start using the solution.
+   Windows:
+
+   ```pwsh
+   pwsh .\scripts\start.ps1
+   ```
+
+   Linux/Mac:
+
+   ```bash
+   ./scripts/start.sh
+   ```
+
+1. The app is available on [http://localhost:8765](http://localhost:8765).
+
+   Once the app is running, when you navigate to the URL above you should see the start screen of the app. To try out the app, click the "Start conversation button", say "Hello", and then ask a question about your data like "What are the perks at Contoso?".
+
 
 ## Troubleshooting
 - [TODO document common mistakes]
