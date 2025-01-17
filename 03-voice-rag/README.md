@@ -38,6 +38,7 @@ After a few minutes, your index will be populated with chunks and vectors from y
 1. If you want to leverage key based authentication, navigate to "Settings -> Keys". Create a new query key and copy and store this value.
 1. If you want to leverage user identity authentication, navigate to "Access control (IAM)" and grant your user the "Search Service Contributor" role.
 
+> [!NOTE]
 > For more details on ingesting data in Azure AI Search using "Import and vectorize data", here's a [quickstart](https://learn.microsoft.com/en-us/azure/search/search-get-started-portal-import-vectors).
 
 ## VoiceRAG webapplication
@@ -100,13 +101,13 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=default
 
     - **Identity based authentication**: This method uses Microsoft Entra ID to authenticate. It's more secure as it doesn't require storing sensitive keys. This will require the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli), as we will use the Azure CLI credential locally.
     
-     To use identity based authentication, log in to your Azure account and select your subscription.
+    To use identity based authentication, log in to your Azure account and select your subscription.
 
-        ```bash
-        az login
-        ```
+    ```bash
+    az login
+    ```
     
-    
+
     > [!IMPORTANT]
     >In order to use identity based authentication, you should grant your user the "Search Service Contributor" role in the Azure AI Search service and the "OpenAI Contributor" role in the Azure OpenAI service. 
 
@@ -121,7 +122,7 @@ Now you can navigate to url and start using the solution.
 
 ### Advanced
 
-If you have more time bla bla
+[TODO - add advanced exercises for user with more time]
 
 ## Prompt Engineering
 
