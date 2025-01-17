@@ -1,19 +1,21 @@
 # Derived from https://github.com/openai/openai-realtime-console. Will integrate with Chainlit when more mature.
 
-import os
 import asyncio
-import inspect
-import re
-import numpy as np
-import json
-from assistant_service import AssistantService
-import websockets
-from datetime import datetime
-from collections import defaultdict
 import base64
+import inspect
+import json
+import os
+import re
 import traceback
-from chainlit.logger import logger
+from collections import defaultdict
+from datetime import datetime
+
+import numpy as np
+import websockets
+from assistant_service import AssistantService
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from chainlit.config import config
+from chainlit.logger import logger
 
 
 def float_to_16bit_pcm(float32_array):
@@ -98,9 +100,6 @@ class RealtimeEventHandler:
         return await future
 
 
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-
-
 class RealtimeAPI(RealtimeEventHandler):
     def __init__(self):
         super().__init__()
@@ -121,7 +120,10 @@ class RealtimeAPI(RealtimeEventHandler):
     def log(self, *args):
         logger.debug(f"[Websocket/{datetime.utcnow().isoformat()}]", *args)
 
-    async def connect(self, model="gpt-4o-realtime-preview"):
+    async def connect(
+        self,
+        model=os.getenv("AZURE_OPENAI_REALTIME_DEPLOYMENT", "gpt-4o-realtime-preview"),
+    ):
         if self.is_connected():
             raise Exception("Already connected")
         headers = (
@@ -180,33 +182,27 @@ class RealtimeConversation:
         "conversation.item.deleted": lambda self, event: self._process_item_deleted(
             event
         ),
-        "conversation.item.input_audio_transcription.completed": lambda self, event: self._process_input_audio_transcription_completed(
-            event
-        ),
-        "input_audio_buffer.speech_started": lambda self, event: self._process_speech_started(
-            event
-        ),
-        "input_audio_buffer.speech_stopped": lambda self, event, input_audio_buffer: self._process_speech_stopped(
-            event, input_audio_buffer
-        ),
+        "conversation.item.input_audio_transcription.completed": lambda self,
+        event: self._process_input_audio_transcription_completed(event),
+        "input_audio_buffer.speech_started": lambda self,
+        event: self._process_speech_started(event),
+        "input_audio_buffer.speech_stopped": lambda self,
+        event,
+        input_audio_buffer: self._process_speech_stopped(event, input_audio_buffer),
         "response.created": lambda self, event: self._process_response_created(event),
-        "response.output_item.added": lambda self, event: self._process_output_item_added(
-            event
-        ),
+        "response.output_item.added": lambda self,
+        event: self._process_output_item_added(event),
         "response.output_item.done": lambda self, event: self._process_output_item_done(
             event
         ),
-        "response.content_part.added": lambda self, event: self._process_content_part_added(
-            event
-        ),
-        "response.audio_transcript.delta": lambda self, event: self._process_audio_transcript_delta(
-            event
-        ),
+        "response.content_part.added": lambda self,
+        event: self._process_content_part_added(event),
+        "response.audio_transcript.delta": lambda self,
+        event: self._process_audio_transcript_delta(event),
         "response.audio.delta": lambda self, event: self._process_audio_delta(event),
         "response.text.delta": lambda self, event: self._process_text_delta(event),
-        "response.function_call_arguments.delta": lambda self, event: self._process_function_call_arguments_delta(
-            event
-        ),
+        "response.function_call_arguments.delta": lambda self,
+        event: self._process_function_call_arguments_delta(event),
     }
 
     def __init__(self):
