@@ -23,7 +23,6 @@ _If you don't have access to the Azure Portal or other policies prevent you from
 
 In this step we will generate a vector index based on your own documents. If you don't want to leverage your own documents, you can download [this sample dataset](https://github.com/Azure-Samples/aisearch-openai-rag-audio/tree/main/data).
 
-(Detailed instructions can be found here:)
 1. Navigate to your Azure AI Search in the [Azure Portal](https://portal.azure.com).
 1. On the "Overview" page, select "Import and vectorize data" in the top bar.
 1. Select Azure Blob Storage as the data source and select your storage account.
@@ -39,7 +38,9 @@ After a few minutes, your index will be populated with chunks and vectors from y
 1. If you want to leverage key based authentication, navigate to "Settings -> Keys". Create a new query key and copy and store this value.
 1. If you want to leverage user identity authentication, navigate to "Access control (IAM)" and grant your user the "Search Service Contributor" role.
 
-## Run VoiceRAG sample
+> For more details on ingesting data in Azure AI Search using "Import and vectorize data", here's a [quickstart](https://learn.microsoft.com/en-us/azure/search/search-get-started-portal-import-vectors).
+
+## VoiceRAG webapplication
 
 Now we have a preconfigured Azure AI Search index, we can run the VoiceRAG sample. In this exercise we will run the sample locally, but you can also deploy it to Azure in a later stage.
 
@@ -78,27 +79,44 @@ git clone https://github.com/Azure-Samples/aisearch-openai-rag-audio.git
 
 ### Configure the environment
 
-TODO explain key based vs identity based authentication
-TODO explain .env creation
+1. Create a `.env` file in the `/app/backend` folder of the project and add the following environment variables, replacing the placeholders with your own services:
 
-#### Key based authentication
+```
+AZURE_OPENAI_ENDPOINT=https://<YOUR_OPENAI_ENDPOINT>.openai.azure.com
+AZURE_OPENAI_REALTIME_DEPLOYMENT=gpt-4o-realtime-preview
+AZURE_SEARCH_ENDPOINT=https://<YOUR_SEARCH_SERVICE>.search.windows.net
+AZURE_SEARCH_INDEX=
+AZURE_SEARCH_SEMANTIC_CONFIGURATION=default
+```
 
-#### Identity based authentication
+1. There are multiple ways to authenticate your application with Azure services: key based authentication and identity based authentication.
 
-Login to your Azure account and select your subscription.
+    - **Key based authentication**: This method uses API keys to authenticate. It's straightforward but less secure because the keys need to be stored and managed securely. If you are using key based authentication, set the following environment variables in your `.env` file:
 
-```az login```
+        ```
+        AZURE_OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+        AZURE_SEARCH_API_KEY=<YOUR_SEARCH_API_KEY>
+        ```
 
-TODO document which rights an user need
+    - **Identity based authentication**: This method uses Microsoft Entra ID to authenticate. It's more secure as it doesn't require storing sensitive keys. This will require the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli), as we will use the Azure CLI credential locally.
+    
+     To use identity based authentication, log in to your Azure account and select your subscription.
 
-## Troubleshooting
-- [TODO document common mistakes]
+        ```bash
+        az login
+        ```
+    
+    > [!IMPORTANT]
+    >In order to use identity based authentication, you should grant your user the "Search Service Contributor" role in the Azure AI Search service and the "OpenAI Contributor" role in the Azure OpenAI service. 
 
 ### Run the solution
 
 TODO explain how to run the scripts on Windows / Linux
 
 Now you can navigate to url and start using the solution.
+
+## Troubleshooting
+- [TODO document common mistakes]
 
 ### Advanced
 
