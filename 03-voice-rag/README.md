@@ -37,7 +37,7 @@ After a few minutes, your index will be populated with chunks and vectors from y
 1. Go back to the main page of your Azure AI Search.
 1. Copy and store the URL of your AI Search, you will need this later.
 1. If you want to leverage key based authentication, navigate to "Settings -> Keys". Create a new query key and copy and store this value.
-1. If you want to leverage user identity authentication, navigate to "Access control (IAM)" and add your user to the "Search Service Contributor" role.
+1. If you want to leverage user identity authentication, navigate to "Access control (IAM)" and grant your user the "Search Service Contributor" role.
 
 ## Run VoiceRAG sample
 
@@ -49,22 +49,32 @@ The easiest way to setup your development environment is to leverage the provide
 
 #### GitHub Codespaces
 
-TODO
+[![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Open&color=brightgreen&logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&skip_quickstart=true&machine=basicLinux32gb&repo=860141324&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+
+Once the codespace opens (this may take several minutes), open a new terminal and proceed to [configure the environment](#configure-the-environment).
 
 #### Local (DevContainer)
 
-TODO
+You can run the project in your local VS Code Dev Container using the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers):
+
+1. Start Docker Desktop (install it if not already installed)
+1. Open the project:
+
+    [![Open in Dev Containers](https://img.shields.io/static/v1?style=for-the-badge&label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/azure-samples/aisearch-openai-rag-audio)
+1. In the VSCode window that opens, once the project files show up (this may take several minutes), open a new terminal, and proceed to [deploying the app](#deploying-the-app).
 
 
 #### Local (Manual)
 
-1. Make sure you meet the prerequisites mentinoed earlier.
+1. Make sure you meet the prerequisites mentioned earlier.
 
-1. Clone the repository
+1. Clone the repository in your development environment.
 
 ```bash
 git clone https://github.com/Azure-Samples/aisearch-openai-rag-audio.git
 ```
+
+1. Navigate to the `aisearch-openai-rag-audio` directory.
 
 ### Configure the environment
 
