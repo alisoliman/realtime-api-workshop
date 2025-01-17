@@ -122,8 +122,11 @@ class RealtimeAPI(RealtimeEventHandler):
 
     async def connect(
         self,
-        model=os.getenv("AZURE_OPENAI_REALTIME_DEPLOYMENT", "gpt-4o-realtime-preview"),
+        model=None,
     ):
+        if not model:
+            model = self.azure_deployment
+
         if self.is_connected():
             raise Exception("Already connected")
         headers = (
