@@ -131,19 +131,40 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=default
    Once the app is running, when you navigate to the URL above you should see the start screen of the app. To try out the app, click the "Start conversation button", say "Hello", and then ask a question about your data like "What are the perks at Contoso?".
 
 
-## Troubleshooting
+### Troubleshooting
 - [TODO document common mistakes]
 
-### Advanced
+## Advanced
 
-[TODO - add advanced exercises for user with more time]
+Great, now you have the sample up and running! This sample is a great starting point to build your own VoiceRAG solution. Here are some advanced exercises to further improve the solution:
 
-## Prompt Engineering
+### Prompt Engineering
 
-In this part of the workshop we will tweak the prompt for the VoiceRAG model. The default prompt is very basic, and we can improve the grounding and behavior by adding more context to the prompt. Due to nature of the model, you can also tune the voice by changing the prompt.
+In this part of the workshop, we will enhance the prompt for the VoiceRAG model. The default prompt is quite basic, and we can significantly improve the grounding and behavior by adding more context. Additionally, due to the nature of the model, you can also adjust the voice to better reflect your brand by modifying the prompt.
 
-1. TODO: grounding tips
-1. TODO: Change the voice to reflect your brand. Prompt engineering.
+#### Improving Grounding
+
+Grounding ensures that the model's responses are relevant and accurate based on the provided context. Here are some tips to improve grounding:
+
+1. **Provide Clear Instructions**: Clearly state the task or question you want the model to address.
+2. **Include Relevant Context**: Add any necessary background information or context that the model needs to generate a more accurate response.
+3. **Specify the Desired Format**: If you need the response in a specific format, make sure to include this in the prompt.
+
+#### Tuning the Voice
+
+You can also adjust the tone and style of the responses by tweaking the prompt. This can help align the model's output with your brand's voice. Here are some tips:
+
+1. **Define the Tone**: Specify whether the tone should be formal, casual, friendly, professional, etc.
+2. **Use Example Phrases**: Provide example phrases or sentences that reflect the desired tone.
+3. **Adjust for Specific Scenarios**: Tailor the prompt for different scenarios to ensure the model responds appropriately in various contexts.
+
+By carefully crafting your prompts, you can make the VoiceRAG model more effective and aligned with your specific needs.
+
+### Exercise
+
+1. [todo]
+1. [todo]
+1. [todo]
 
 ### Function calling
 
@@ -152,5 +173,9 @@ Exercise to improve the function calling. Explain how it currently works.
 TODO Highlight why grounding is more difficult in voice.
 TODO add concrete examples
 
+#### Exercise
 
+1. [todo]
+1. [todo]
+1. [todo]
 
