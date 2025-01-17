@@ -8,7 +8,7 @@ import os
 import re
 import traceback
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 import numpy as np
 import websockets
@@ -118,7 +118,7 @@ class RealtimeAPI(RealtimeEventHandler):
         return self.ws is not None
 
     def log(self, *args):
-        logger.debug(f"[Websocket/{datetime.utcnow().isoformat()}]", *args)
+        logger.debug(f"[Websocket/{datetime.now(timezone.utc).isoformat()}]", *args)
 
     async def connect(
         self,
@@ -487,7 +487,7 @@ class RealtimeClient(RealtimeEventHandler):
 
     def _log_event(self, event):
         realtime_event = {
-            "time": datetime.utcnow().isoformat(),
+            "time": datetime.now(timezone.utc).isoformat(),
             "source": "client" if event["type"].startswith("client.") else "server",
             "event": event,
         }
