@@ -7,7 +7,7 @@ Learn the fundamentals of real-time communication with WebSockets through hands-
 WebSockets are a protocol that enables two-way communication between a client and server over a single, long-lived connection. Unlike HTTP, which is request-response based, WebSockets allow for:
 - Real-time data transfer
 - Bi-directional communication
-- Lower latency than HTTP polling
+- Lower latency
 
 ## Core Concepts
 
