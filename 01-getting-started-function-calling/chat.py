@@ -209,11 +209,11 @@ async def on_audio_start():
     try:
         openai_realtime: RealtimeClient = cl.user_session.get("openai_realtime")
         await openai_realtime.connect()
-        logger.info("Connected to OpenAI realtime")
+        logger.info("Connected to Azure OpenAI Realtime API")
         return True
     except Exception as e:
         await cl.ErrorMessage(
-            content=f"Failed to connect to OpenAI realtime: {e}"
+            content=f"Failed to connect to Azure OpenAI Realtime API: {e}"
         ).send()
         return False
 
