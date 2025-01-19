@@ -87,4 +87,4 @@ Try both methods to get the ball's position:
 
 ## Next Steps
 
-Now that we understand how WebSockets enable real-time communication, let's explore how this technology powers voice-to-voice interactions in the [Real-time API](../01-getting-started-function-calling/workshop.md). You'll see how WebSockets facilitate seamless streaming of audio data between users, enabling natural conversations with minimal latency.
+Now that we understand how WebSockets enable real-time communication, let's explore how this technology powers voice-to-voice interactions in the [Real-time API](../01-getting-started-function-calling/README.md). You'll see how WebSockets facilitate seamless streaming of audio data between users, enabling natural conversations with minimal latency.

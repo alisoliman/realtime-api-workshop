@@ -267,4 +267,4 @@ In the next workshop, we'll explore how to ground your voice assistants with rea
 - Handle queries about specific documents or knowledge bases
 - Maintain voice-friendly responses while accessing detailed information
 
-Continue to [Voice RAG Workshop](../03-voice-rag/workshop.md) to get started!
+Continue to [Voice RAG Workshop](../03-voice-rag/README.md) to get started!
