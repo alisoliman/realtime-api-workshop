@@ -182,9 +182,9 @@ billing_assistant = {
                 "required": ["account_id"]
             },
             "returns": lambda input: {
-                "balance": 80.75,
-                "international_calls_charge": 45.50,
-                "due_date": "2024-02-01"
+                "balance": "€80.75",
+                "international_calls_charge": "€45.50",
+                "due_date": "2025-02-01"
             }
         },
         {
@@ -202,9 +202,9 @@ billing_assistant = {
                 "required": ["account_id", "month"]
             },
             "returns": lambda input: {
-                "total_amount": 125.25,
-                "base_charges": 80.00,
-                "usage_charges": 45.25,
+                "total_amount": "€85.25",
+                "base_charges": "€40.00",
+                "usage_charges": "€45.25",
                 "statement_date": f"{input['month']}-15"
             }
         }
