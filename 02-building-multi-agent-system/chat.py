@@ -47,7 +47,7 @@ async def setup_openai_realtime():
         """Currently used to stream audio back to the client."""
         if event:
             # print(f"Event {event}")
-            if "input_audio_transcription" in item["type"]:
+            if "input_audio_transcription" in item["type"] and delta and "transcript" in delta:
                 msg = cl.Message(content=delta["transcript"], author="user")
                 msg.type = "user_message"
                 await msg.send()
@@ -169,11 +169,11 @@ async def on_audio_start():
         # TODO: might want to recreate items to restore context
         # openai_realtime.create_conversation_item(item)
         await openai_realtime.connect()
-        logger.info("Connected to OpenAI realtime")
+        logger.info("Connected to Azure OpenAI Realtime API")
         return True
     except Exception as e:
         await cl.ErrorMessage(
-            content=f"Failed to connect to OpenAI realtime: {e}"
+            content=f"Failed to connect to Azure OpenAI Realtime API: {e}"
         ).send()
         return False
 
