@@ -37,48 +37,6 @@
             background-color: #f8f9fa;
             border-radius: 4px;
         }
-        #messageLog {
-            height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-        .message {
-            margin: 5px 0;
-            padding: 5px;
-            border-radius: 4px;
-        }
-        .received { background-color: #e3f2fd; }
-        .sent { background-color: #e8f5e9; }
-        canvas {
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 400px;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 8px 16px;
-            background-color: #2196f3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover { background-color: #1976d2; }
         .status {
             padding: 10px;
             margin: 10px 0;
@@ -92,6 +50,33 @@
             background-color: #ffcdd2;
             color: #c62828;
         }
+        canvas {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #1976d2; }
         .metrics {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -134,19 +119,13 @@
 
                 <h3>Ball Animation (WebSocket)</h3>
                 <canvas id="wsCanvas" width="400" height="400"></canvas>
-                
-                <div class="input-group">
-                    <input type="text" id="wsMessageInput" placeholder="Type a message...">
-                    <button onclick="sendWsMessage()">Send</button>
-                </div>
-                <div id="wsMessageLog"></div>
             </div>
 
             <!-- REST API Panel -->
             <div class="panel">
                 <h2>REST API Implementation</h2>
                 <div class="input-group">
-                    <input type="number" id="pollInterval" value="50" min="10" max="1000" step="10">
+                    <input type="number" id="pollInterval" value="100" min="100" max="1000" step="100">
                     <button onclick="togglePolling()">Start Polling</button>
                 </div>
 
@@ -163,12 +142,6 @@
 
                 <h3>Ball Animation (REST)</h3>
                 <canvas id="restCanvas" width="400" height="400"></canvas>
-                
-                <div class="input-group">
-                    <input type="text" id="restMessageInput" placeholder="Type a message...">
-                    <button onclick="sendRestMessage()">Send</button>
-                </div>
-                <div id="restMessageLog"></div>
             </div>
         </div>
     </div>
@@ -191,37 +164,23 @@
                 isConnected = true;
                 document.getElementById('wsStatus').textContent = 'Connected';
                 document.getElementById('wsStatus').className = 'status connected';
-                logWsMessage('System', 'Connected to server');
             };
 
             ws.onclose = () => {
                 isConnected = false;
                 document.getElementById('wsStatus').textContent = 'Disconnected - Reconnecting...';
                 document.getElementById('wsStatus').className = 'status disconnected';
-                logWsMessage('System', 'Disconnected from server');
                 setTimeout(connect, 1000);
             };
 
             ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                metrics.ws.updates++;
                 metrics.ws.dataTransfer += event.data.length;
                 updateMetrics('ws');
-                
-                const data = JSON.parse(event.data);
-                
-                switch(data.type) {
-                    case 'welcome':
-                        logWsMessage('Server', data.message);
-                        break;
-                    case 'echo':
-                        logWsMessage('Echo', data.message);
-                        break;
-                    case 'game_update':
-                        metrics.ws.updates++;
-                        updateBall('wsCanvas', data.position);
-                        break;
-                    case 'error':
-                        logWsMessage('Error', data.message);
-                        break;
+
+                if (data.type === 'game_update') {
+                    updateBall('wsCanvas', data.position);
                 }
             };
         }
@@ -231,10 +190,9 @@
 
         async function pollBallPosition() {
             try {
-                const response = await fetch('http://localhost:8766/api/ball');
+                const response = await fetch('http://localhost:8080/ball-position');
                 const data = await response.json();
                 
-                // Track metrics
                 metrics.rest.updates++;
                 metrics.rest.dataTransfer += JSON.stringify(data).length;
                 updateMetrics('rest');
@@ -246,34 +204,31 @@
         }
 
         function togglePolling() {
-            const intervalInput = document.getElementById('pollInterval');
-            const toggleBtn = document.querySelector('button');
-            
-            if (!metrics.rest.polling) {
-                metrics.rest.polling = true;
-                toggleBtn.textContent = 'Stop Polling';
-                pollInterval = setInterval(pollBallPosition, parseInt(intervalInput.value));
-            } else {
-                metrics.rest.polling = false;
-                toggleBtn.textContent = 'Start Polling';
+            if (metrics.rest.polling) {
                 clearInterval(pollInterval);
+                metrics.rest.polling = false;
+                document.querySelector('button').textContent = 'Start Polling';
+            } else {
+                const interval = parseInt(document.getElementById('pollInterval').value);
+                pollInterval = setInterval(pollBallPosition, interval);
+                metrics.rest.polling = true;
+                document.querySelector('button').textContent = 'Stop Polling';
             }
         }
 
-        // Shared utilities
         function updateBall(canvasId, position) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             ctx.beginPath();
-            const x = (position.x / 100) * canvas.width;
-            const y = (position.y / 100) * canvas.height;
-            ctx.arc(x, y, 10, 0, Math.PI * 2);
+            ctx.arc(
+                position.x * canvas.width / 100,
+                position.y * canvas.height / 100,
+                10, 0, Math.PI * 2
+            );
             ctx.fillStyle = '#2196f3';
             ctx.fill();
-            ctx.closePath();
         }
 
         function updateMetrics(type) {
@@ -282,80 +237,7 @@
                 `${(metrics[type].dataTransfer / 1024).toFixed(2)} KB`;
         }
 
-        function logWsMessage(sender, message) {
-            const log = document.getElementById('wsMessageLog');
-            const div = document.createElement('div');
-            div.className = `message ${sender === 'You' ? 'sent' : 'received'}`;
-            div.textContent = `${sender}: ${message}`;
-            log.appendChild(div);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        function logRestMessage(sender, message) {
-            const log = document.getElementById('restMessageLog');
-            const div = document.createElement('div');
-            div.className = `message ${sender === 'You' ? 'sent' : 'received'}`;
-            div.textContent = `${sender}: ${message}`;
-            log.appendChild(div);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        async function sendWsMessage() {
-            const input = document.getElementById('wsMessageInput');
-            const message = input.value.trim();
-            
-            if (message && isConnected) {
-                const data = {
-                    message: message,
-                    timestamp: new Date().toISOString()
-                };
-                ws.send(JSON.stringify(data));
-                logWsMessage('You', message);
-                input.value = '';
-            }
-        }
-
-        async function sendRestMessage() {
-            const input = document.getElementById('restMessageInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                try {
-                    const data = {
-                        message: message,
-                        timestamp: new Date().toISOString()
-                    };
-                    const response = await fetch('http://localhost:8766/api/echo', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    });
-                    
-                    const responseData = await response.json();
-                    metrics.rest.dataTransfer += JSON.stringify(data).length + JSON.stringify(responseData).length;
-                    updateMetrics('rest');
-                    
-                    logRestMessage('You', message);
-                    logRestMessage('Echo', responseData.message);
-                    input.value = '';
-                } catch (error) {
-                    logRestMessage('Error', error.message);
-                }
-            }
-        }
-
-        // Handle Enter key in inputs
-        document.getElementById('wsMessageInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendWsMessage();
-        });
-
-        document.getElementById('restMessageInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendRestMessage();
-        });
-
-        // Initial connection
+        // Start WebSocket connection
         connect();
     </script>
 </body>

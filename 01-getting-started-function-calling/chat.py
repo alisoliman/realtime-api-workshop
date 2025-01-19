@@ -107,6 +107,7 @@ main_assistant = {
 # 3) Realtime Client Setup & Event Handlers
 # =============================================================================
 
+
 async def setup_openai_realtime():
     """Initialize and configure the OpenAI Realtime Client with event handlers."""
     # Create a RealtimeClient with an empty system prompt
@@ -134,7 +135,9 @@ async def setup_openai_realtime():
                 await msg.send()
             else:
                 # Optionally log or handle the missing transcript here
-                logger.warning("Audio transcription event received, but no transcript found.")
+                logger.warning(
+                    "Audio transcription event received, but no transcript found."
+                )
 
         # If there's delta data and "audio" in delta, send audio chunks
         if delta and "audio" in delta:
@@ -182,6 +185,7 @@ async def setup_openai_realtime():
 # =============================================================================
 # 4) Chainlit Callbacks (Chat, Audio, etc.)
 # =============================================================================
+
 
 @cl.on_chat_start
 async def start():

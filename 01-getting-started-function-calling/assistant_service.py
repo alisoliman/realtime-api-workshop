@@ -16,18 +16,19 @@ logger.setLevel(logging.DEBUG)
 # ASSISTANT SERVICE CLASS
 # ---------------------------
 
+
 class AssistantService:
     """
     A service for managing AI assistants and their interactions.
-    
+
     This class allows for:
     - Registration of different 'agent' objects, each representing
       an AI assistant with specific capabilities and tools.
     - Retrieval of agents by their IDs.
     - Retrieval of an agent's tools.
-    - Execution of a specified tool, with parameters, 
+    - Execution of a specified tool, with parameters,
       to produce a result within a conversation context.
-    
+
     Attributes:
         language (str): The default language for the service (e.g., "English").
         agents (dict): A dictionary holding all registered agents, keyed by their IDs.
@@ -36,7 +37,7 @@ class AssistantService:
     def __init__(self, language: str = "English"):
         """
         Initialize an AssistantService instance.
-        
+
         Args:
             language (str, optional): The default language for the service.
                                       Defaults to "English".
@@ -51,10 +52,10 @@ class AssistantService:
     def get_tools_for_assistant(self, id: str):
         """
         Retrieve a list of tools for a specific assistant.
-        
+
         Args:
             id (str): The unique identifier of the assistant.
-        
+
         Returns:
             list: A list of tool definitions (dictionaries) containing
                   'type', 'name', 'parameters', and 'description'.
@@ -78,7 +79,7 @@ class AssistantService:
         Register a new agent in the service. The agent's system message
         is formatted based on the service language, and the agent is also
         stored as the root agent for compatibility.
-        
+
         Args:
             agent (dict): A dictionary representing the agent's configuration.
                           Must include 'id', 'tools', and 'system_message'.
@@ -97,10 +98,10 @@ class AssistantService:
     def get_agent(self, id: str):
         """
         Retrieve an agent by its ID.
-        
+
         Args:
             id (str): The unique identifier of the agent.
-        
+
         Returns:
             dict or None: The agent configuration if found, otherwise None.
         """
@@ -113,12 +114,12 @@ class AssistantService:
     async def get_tool_response(self, tool_name: str, parameters: dict, call_id: str):
         """
         Execute a tool function and return its response for a given conversation call.
-        
+
         Args:
             tool_name (str): The name of the tool to execute.
             parameters (dict): Parameters required for the tool's execution.
             call_id (str): A unique identifier for the current conversation turn.
-        
+
         Returns:
             dict or None: A structured response containing the tool output, or
                           None if the specified tool cannot be found.
@@ -164,11 +165,11 @@ class AssistantService:
     def format_string(self, text: str, params: dict):
         """
         Safely format a string using the given parameters.
-        
+
         Args:
             text (str): The text to format.
             params (dict): A dictionary of key-value pairs for formatting.
-        
+
         Returns:
             str: The formatted text, or the original text if formatting is not possible.
         """
