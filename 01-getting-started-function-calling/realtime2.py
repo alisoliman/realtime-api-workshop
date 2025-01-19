@@ -144,7 +144,7 @@ class RealtimeAPI(RealtimeEventHandler):
         super().__init__()
         self.default_url = "wss://api.openai.com/v1/realtime"
         self.url = os.environ["AZURE_OPENAI_ENDPOINT"]
-        self.api_key = os.environ["AZURE_OPENAI_API_KEY"]
+        self.api_key = os.getenv("AZURE_OPENAI_API_KEY", "")
         self.credentials = DefaultAzureCredential()
         self.acquire_token = get_bearer_token_provider(
             self.credentials, "https://cognitiveservices.azure.com/.default"
@@ -163,25 +163,25 @@ class RealtimeAPI(RealtimeEventHandler):
         """
         Helper logger to prepend timestamp info to logs.
         """
-        logger.debug(f"[Websocket/{datetime.utcnow().isoformat()}]", *args)
+        logger.debug(f"[Websocket/{datetime.now(timezone.utc).isoformat()}]", *args)
 
-    async def connect(self, model="gpt-4o-realtime-preview"):
+    async def connect(self, model=None):
         """
-        Establish a WebSocket connection to the Azure OpenAI real-time endpoint.
+        Establishes a WebSocket connection to the specified model.
 
-        :param model: The model name to use. Defaults to "gpt-4o-realtime-preview".
-        :raises Exception: If a connection is already active.
+        :param model: Model name or deployment name to connect to.
+        :raises Exception: If already connected or if connection fails.
         """
+        if not model:
+            model = self.azure_deployment
+
         if self.is_connected():
             raise Exception("Already connected")
-
-        # Prepare headers
         headers = (
             {"api-key": self.api_key}
             if self.api_key != ""
             else {"Authorization": f"Bearer {self.acquire_token()}"}
         )
-        # Establish connection
         self.ws = await websockets.connect(
             f"{self.url}/openai/realtime?api-version={self.api_version}&deployment={model}",
             additional_headers=headers,
@@ -277,18 +277,15 @@ class RealtimeConversation:
             )
         ),
         "response.created": lambda self, event: self._process_response_created(event),
-        "response.output_item.added": lambda self, event: self._process_output_item_added(
-            event
-        ),
+        "response.output_item.added": lambda self,
+        event: self._process_output_item_added(event),
         "response.output_item.done": lambda self, event: self._process_output_item_done(
             event
         ),
-        "response.content_part.added": lambda self, event: self._process_content_part_added(
-            event
-        ),
-        "response.audio_transcript.delta": lambda self, event: self._process_audio_transcript_delta(
-            event
-        ),
+        "response.content_part.added": lambda self,
+        event: self._process_content_part_added(event),
+        "response.audio_transcript.delta": lambda self,
+        event: self._process_audio_transcript_delta(event),
         "response.audio.delta": lambda self, event: self._process_audio_delta(event),
         "response.text.delta": lambda self, event: self._process_text_delta(event),
         "response.function_call_arguments.delta": (

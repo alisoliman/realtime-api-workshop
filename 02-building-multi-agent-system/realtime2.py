@@ -151,7 +151,7 @@ class RealtimeAPI(RealtimeEventHandler):
 
         # Azure environment variables
         self.url = os.environ["AZURE_OPENAI_ENDPOINT"]
-        self.api_key = os.environ["AZURE_OPENAI_API_KEY"]
+        self.api_key = os.getenv("AZURE_OPENAI_API_KEY", "")
         self.credentials = DefaultAzureCredential()
         self.acquire_token = get_bearer_token_provider(
             self.credentials, "https://cognitiveservices.azure.com/.default"
@@ -174,30 +174,31 @@ class RealtimeAPI(RealtimeEventHandler):
         """
         logger.debug(f"[Websocket/{datetime.utcnow().isoformat()}]", *args)
 
-    async def connect(self, model="gpt-4o-realtime-preview"):
+    async def connect(
+        self,
+        model=None,
+    ):
         """
         Establishes a WebSocket connection to the specified model.
 
         :param model: Model name or deployment name to connect to.
         :raises Exception: If already connected or if connection fails.
         """
+        if not model:
+            model = self.azure_deployment
+
         if self.is_connected():
             raise Exception("Already connected")
-
-        # Determine whether to use API key or Bearer token
         headers = (
             {"api-key": self.api_key}
             if self.api_key != ""
             else {"Authorization": f"Bearer {self.acquire_token()}"}
         )
-
         self.ws = await websockets.connect(
             f"{self.url}/openai/realtime?api-version={self.api_version}&deployment={model}",
             additional_headers=headers,
         )
         self.log(f"Connected to {self.url}")
-
-        # Start a background task to receive messages
         asyncio.create_task(self._receive_messages())
 
     async def _receive_messages(self):
@@ -280,27 +281,23 @@ class RealtimeConversation:
         "conversation.item.input_audio_transcription.completed": (
             lambda self, event: self._process_input_audio_transcription_completed(event)
         ),
-        "input_audio_buffer.speech_started": lambda self, event: self._process_speech_started(
-            event
-        ),
+        "input_audio_buffer.speech_started": lambda self,
+        event: self._process_speech_started(event),
         "input_audio_buffer.speech_stopped": (
             lambda self, event, input_audio_buffer: self._process_speech_stopped(
                 event, input_audio_buffer
             )
         ),
         "response.created": lambda self, event: self._process_response_created(event),
-        "response.output_item.added": lambda self, event: self._process_output_item_added(
-            event
-        ),
+        "response.output_item.added": lambda self,
+        event: self._process_output_item_added(event),
         "response.output_item.done": lambda self, event: self._process_output_item_done(
             event
         ),
-        "response.content_part.added": lambda self, event: self._process_content_part_added(
-            event
-        ),
-        "response.audio_transcript.delta": lambda self, event: self._process_audio_transcript_delta(
-            event
-        ),
+        "response.content_part.added": lambda self,
+        event: self._process_content_part_added(event),
+        "response.audio_transcript.delta": lambda self,
+        event: self._process_audio_transcript_delta(event),
         "response.audio.delta": lambda self, event: self._process_audio_delta(event),
         "response.text.delta": lambda self, event: self._process_text_delta(event),
         "response.function_call_arguments.delta": (
