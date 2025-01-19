@@ -36,7 +36,9 @@ av==12.3.0
 azure-core==1.32.0
     # via azure-identity
 azure-identity==1.19.0
-    # via rtclient
+    # via
+    #   realtime-api-workshop (pyproject.toml)
+    #   rtclient
 bidict==0.23.1
     # via python-socketio
 blinker==1.9.0
