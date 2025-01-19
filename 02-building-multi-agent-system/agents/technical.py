@@ -92,7 +92,9 @@ technical_assistant = {
             "returns": lambda input: (
                 "DEGRADED"
                 if input["service"] == "INET_HOME"
-                else "OK" if input["service"] == "INET_MOBILE" else "UNKNOWN"
+                else "OK"
+                if input["service"] == "INET_MOBILE"
+                else "UNKNOWN"
             ),
         },
     ],

@@ -5,7 +5,12 @@ aiofiles==23.2.1
 aiohappyeyeballs==2.4.4
     # via aiohttp
 aiohttp==3.11.11
-    # via rtclient
+    # via
+    #   realtime-api-workshop (pyproject.toml)
+    #   aiohttp-cors
+    #   rtclient
+aiohttp-cors==0.7.0
+    # via realtime-api-workshop (pyproject.toml)
 aioice==0.9.0
     # via aiortc
 aiortc==1.9.0
@@ -31,7 +36,9 @@ av==12.3.0
 azure-core==1.32.0
     # via azure-identity
 azure-identity==1.19.0
-    # via rtclient
+    # via
+    #   realtime-api-workshop (pyproject.toml)
+    #   rtclient
 bidict==0.23.1
     # via python-socketio
 blinker==1.9.0

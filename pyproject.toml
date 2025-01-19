@@ -16,6 +16,9 @@ dependencies = [
     "av>=12.3.0",
     "chainlit>=2.0.3",
     "pydantic==2.10.1",
+    "aiohttp>=3.11.11",
+    "aiohttp-cors>=0.7.0",
+    "azure-identity>=1.19.0",
 ]
 
 [tool.uv.sources]

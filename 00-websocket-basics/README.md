@@ -1,59 +1,90 @@
 # WebSocket Basics Workshop
 
-Welcome to the WebSocket basics workshop! In this module, you'll learn about WebSockets through hands-on examples.
+A quick hands-on introduction to WebSocket communication through practical examples.
 
-## What are WebSockets?
+## Quick Start
 
-WebSockets are a protocol that enables two-way communication between a client and server over a single, long-lived connection. Unlike HTTP, which is request-response based, WebSockets allow for:
-- Real-time data transfer
-- Bi-directional communication
-- Lower latency than HTTP polling
+### Setting Up
 
-## Workshop Contents
+Choose one of the following methods to run the demo:
 
-This workshop includes:
-1. A simple WebSocket echo server (`server.py`)
-2. An interactive web client (`index.html` and `static/main.js`)
-3. A Python WebSocket client (`client.py`)
-
-## Getting Started
-
-1. Install the requirements:
+#### Option 1: Using uv (Recommended)
+[uv](https://github.com/astral-sh/uv) is a fast Python package installer and runner. If you haven't installed it yet:
 ```bash
-pip install -r requirements.txt
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
+
+Then run the server directly (this will automatically install dependencies):
+```bash
+cd 00-websocket-basics
+uv run server.py
+```
+
+In a new terminal, start the web client:
+```bash
+cd 00-websocket-basics
+uv run -m http.server 8000
+```
+
+#### Option 2: Using pip
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 2. Start the WebSocket server:
-```bash
-python server.py
+   ```bash
+   python server.py
+   ```
+
+3. In a new terminal, start the web client:
+   ```bash
+   cd 00-websocket-basics
+   python -m http.server 8000
+   ```
+
+### Accessing the Demo
+
+Open your browser and visit:
+```
+http://localhost:8000
 ```
 
-3. Open the web client in your browser:
-```bash
-python -m http.server 8000
-```
-Then visit http://localhost:8000
+## What to Observe
 
-## Interactive Examples
+### 1. Bouncing Ball Demo
+- Watch the ball's movement - it updates in real-time without any visible delay
+- Open multiple browser windows - notice how they all stay perfectly synchronized
+- Open the browser's Developer Tools (Network tab) and observe:
+  - A single WebSocket connection staying open
+  - No continuous HTTP requests needed for updates
 
-1. **Echo Test**: Send messages and see them echoed back
-2. **Bouncing Ball Demo**: 
-   - A simple animation showing a ball bouncing around the canvas
-   - Demonstrates server-pushed updates in real-time
-   - Shows how WebSockets enable:
-     * Continuous data streaming from server to client
-     * Smooth animations without client-side requests
-     * Same state synchronized across all connected clients
-3. **Chat Room**: Basic multi-client chat functionality
+### 2. HTTP vs WebSocket Comparison
+Try both methods to get the ball's position:
 
-## Key Concepts Covered
+**WebSocket (Already running)**
+- Smooth, continuous updates
+- Single persistent connection
+- Minimal network overhead
 
-- WebSocket Connection Lifecycle
-- Message Handling
-- Error Handling
-- Asynchronous Programming with WebSockets
-- Real-time Updates
+**HTTP Polling (Try it out)**
+1. Click the "Start HTTP Polling" button (default interval: 100ms)
+2. Experiment with different polling intervals (100ms, 500ms, 1000ms)
+3. Observe:
+   - Increased network traffic
+   - Less smooth updates at higher intervals
+   - Higher latency compared to WebSocket
+   - More server load due to frequent new connections
+
+## Key Takeaways
+
+- WebSockets provide real-time updates with minimal latency
+- Single persistent connection vs multiple HTTP requests
+- Perfect for:
+  - Live data streaming
+  - Real-time synchronization
+  - Bi-directional communication
 
 ## Next Steps
 
-After completing this module, you'll be ready to work with the Azure OpenAI Realtime API, which uses similar WebSocket concepts for real-time AI interactions.
+Now that we understand how WebSockets enable real-time communication, let's explore how this technology powers voice-to-voice interactions in the [Real-time API](../01-getting-started-function-calling/README.md). You'll see how WebSockets facilitate seamless streaming of audio data between users, enabling natural conversations with minimal latency.

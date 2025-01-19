@@ -90,6 +90,18 @@ wheels = [
 ]
 
 [[package]]
+name = "aiohttp-cors"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "aiohttp" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/44/9e/6cdce7c3f346d8fd487adf68761728ad8cd5fbc296a7b07b92518350d31f/aiohttp-cors-0.7.0.tar.gz", hash = "sha256:4d39c6d7100fd9764ed1caf8cebf0eb01bf5e3f24e2e073fda6234bc48b19f5d", size = 35966 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/13/e7/e436a0c0eb5127d8b491a9b83ecd2391c6ff7dcd5548dfaec2080a2340fd/aiohttp_cors-0.7.0-py3-none-any.whl", hash = "sha256:0451ba59fdf6909d0e2cd21e4c0a43752bc0703d33fc78ae94d9d9321710193e", size = 27564 },
+]
+
+[[package]]
 name = "aioice"
 version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1465,8 +1477,11 @@ name = "realtime-api-workshop"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "aiohttp" },
+    { name = "aiohttp-cors" },
     { name = "aiortc" },
     { name = "av" },
+    { name = "azure-identity" },
     { name = "chainlit" },
     { name = "eventlet" },
     { name = "flask" },
@@ -1480,8 +1495,11 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "aiohttp", specifier = ">=3.11.11" },
+    { name = "aiohttp-cors", specifier = ">=0.7.0" },
     { name = "aiortc", specifier = ">=1.9.0" },
     { name = "av", specifier = ">=12.3.0" },
+    { name = "azure-identity", specifier = ">=1.19.0" },
     { name = "chainlit", specifier = ">=2.0.3" },
     { name = "eventlet", specifier = ">=0.38.2" },
     { name = "flask", specifier = ">=3.1.0" },

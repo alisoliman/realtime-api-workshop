@@ -107,6 +107,7 @@ main_assistant = {
 # 3) Realtime Client Setup & Event Handlers
 # =============================================================================
 
+
 async def setup_openai_realtime():
     """Initialize and configure the OpenAI Realtime Client with event handlers."""
     # Create a RealtimeClient with an empty system prompt
@@ -134,7 +135,9 @@ async def setup_openai_realtime():
                 await msg.send()
             else:
                 # Optionally log or handle the missing transcript here
-                logger.warning("Audio transcription event received, but no transcript found.")
+                logger.warning(
+                    "Audio transcription event received, but no transcript found."
+                )
 
         # If there's delta data and "audio" in delta, send audio chunks
         if delta and "audio" in delta:
@@ -183,6 +186,7 @@ async def setup_openai_realtime():
 # 4) Chainlit Callbacks (Chat, Audio, etc.)
 # =============================================================================
 
+
 @cl.on_chat_start
 async def start():
     """Initialize the chat session when the conversation starts."""
@@ -209,11 +213,11 @@ async def on_audio_start():
     try:
         openai_realtime: RealtimeClient = cl.user_session.get("openai_realtime")
         await openai_realtime.connect()
-        logger.info("Connected to OpenAI realtime")
+        logger.info("Connected to Azure OpenAI Realtime API")
         return True
     except Exception as e:
         await cl.ErrorMessage(
-            content=f"Failed to connect to OpenAI realtime: {e}"
+            content=f"Failed to connect to Azure OpenAI Realtime API: {e}"
         ).send()
         return False
 

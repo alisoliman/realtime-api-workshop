@@ -33,20 +33,24 @@ class AssistantService:
         Returns:
             list: A list of tool definitions including both real tools and other assistants as tools
         """
-        # Get tools for agent
-        # This includes the agent's own tools and other agents as tools
+        # Get the specified agent's tools
         agent_real_tools = self.agents[id]["tools"]
-        other_agents_as_tools = [
-            {
-                "name": ag["id"],
-                "description": ag["description"],
-                "parameters": {"type": "object", "properties": {}},
-                "returns": lambda foo: ag["id"],
-            }
-            for k, ag in self.agents.items()
-            if k != id
-        ]
 
+        # Represent other agents as "tools" to allow switching/communication
+        other_agents_as_tools = []
+        for agent_id, agent_data in self.agents.items():
+            if agent_id != id:
+                other_agents_as_tools.append(
+                    {
+                        "name": agent_data["id"],
+                        "description": agent_data["description"],
+                        "parameters": {"type": "object", "properties": {}},
+                        "returns": lambda unused: agent_data["id"],
+                    }
+                )
+
+        # Combine the real tools and agents-as-tools, then build final definitions
+        combined_tools = agent_real_tools + other_agents_as_tools
         tools_definitions = [
             {
                 "type": "function",
@@ -54,8 +58,9 @@ class AssistantService:
                 "parameters": tool["parameters"],
                 "description": tool["description"],
             }
-            for tool in agent_real_tools + other_agents_as_tools
+            for tool in combined_tools
         ]
+
         return tools_definitions
 
     def register_agent(self, agent):
@@ -67,9 +72,11 @@ class AssistantService:
         Args:
             agent (dict): Agent configuration including ID, system message, and tools
         """
+        # Format the system message with the current service language
         agent["system_message"] = self.format_string(
             agent["system_message"], {"language": self.language}
         )
+        # Store the agent in the agents dictionary
         self.agents[agent["id"]] = agent
 
     def get_agent(self, id):
@@ -95,20 +102,26 @@ class AssistantService:
             root_agent (dict): Root agent configuration including ID, system message, and tools
         """
         # Ensure every other agent has a tool to switch back to the root agent
-        for k, ag in self.agents.items():
-            ag["tools"].append(
+        for agent_id, agent_data in self.agents.items():
+            agent_data["tools"].append(
                 {
                     "name": root_agent["id"],
-                    "description": f"If customer asks any question that is outside of your work scope, DO use this to switch back to {root_agent['id']}.",
+                    "description": (
+                        f"If the customer asks any question that is outside of "
+                        f"your work scope, DO use this to switch back to "
+                        f"{root_agent['id']}."
+                    ),
                     "parameters": {"type": "object", "properties": {}},
-                    "returns": lambda arg: root_agent["id"],
+                    "returns": lambda unused: root_agent["id"],
                 }
             )
 
-        # Register root agent, also with "root" key
+        # Format and register the root agent's system message
         root_agent["system_message"] = self.format_string(
             root_agent["system_message"], {"language": self.language}
         )
+
+        # Register the root agent under both its own ID and "root"
         self.agents["root"] = self.agents[root_agent["id"]] = root_agent
 
     async def get_tool_response(self, tool_name, parameters, call_id):
@@ -130,52 +143,59 @@ class AssistantService:
             f"getToolResponse: tool_name={tool_name}, parameters={parameters}, call_id={call_id}"
         )
 
-        # Invoked tool is either a real tool or an agent
-        all_tools = [tool for ag in self.agents.values() for tool in ag["tools"]]
+        # Collect all tools from all agents
+        all_tools = [
+            tool for agent_data in self.agents.values() for tool in agent_data["tools"]
+        ]
+        # Also collect all agents as "tools"
         all_agents_as_tools = [
             {
-                "name": ag["id"],
-                "description": ag["description"],
+                "name": agent_data["id"],
+                "description": agent_data["description"],
                 "parameters": {"type": "object", "properties": {}},
-                "returns": lambda foo: ag["id"],
+                "returns": lambda unused: agent_data["id"],
             }
-            for ag in self.agents.values()
+            for agent_data in self.agents.values()
         ]
-        tools = all_tools + all_agents_as_tools
 
-        # Get tool by name
-        tool = next((t for t in tools if t["name"] == tool_name), None)
+        # Merge into one list for searching
+        all_available_tools = all_tools + all_agents_as_tools
 
-        # Execute tool
-        # If tool_name matches "assistant", it means we are switching to another agent
+        # Find the requested tool by name
+        tool = next((t for t in all_available_tools if t["name"] == tool_name), None)
+
+        # If the tool name indicates a switch to another agent
         if re.search(r"assistant", tool_name, re.IGNORECASE):
-            agent = self.agents[tool_name]
-            logger.debug(f"Switching to agent {agent['id']}")
+            target_agent = self.agents[tool_name]
+            logger.debug(f"Switching to agent {target_agent['id']}")
+
+            # Construct a session update message for switching context
             config_message = {
                 "type": "session.update",
                 "session": {
                     "turn_detection": {"type": "server_vad"},
                     "instructions": self.format_string(
-                        agent["system_message"], {"language": self.language}
+                        target_agent["system_message"], {"language": self.language}
                     ),
-                    # NOTE we dont' simply use agent['tools'] here because we want to include other agents as tools
+                    # Include all relevant tools for the target agent
                     "tools": self.get_tools_for_assistant(tool_name),
                 },
             }
             return config_message
-        else:
-            # TODO check if tool.returns() may be a coroutine and use await if necessary
-            content = tool["returns"](parameters)
-            logger.debug(f"Tool {tool_name} returned content: {content}")
-            response = {
-                "type": "conversation.item.create",
-                "item": {
-                    "type": "function_call_output",
-                    "call_id": call_id,
-                    "output": content,
-                },
-            }
-            return response
+
+        # Otherwise, we are executing a normal tool
+        content = tool["returns"](parameters)
+        logger.debug(f"Tool {tool_name} returned content: {content}")
+
+        response = {
+            "type": "conversation.item.create",
+            "item": {
+                "type": "function_call_output",
+                "call_id": call_id,
+                "output": content,
+            },
+        }
+        return response
 
     def format_string(self, text, params):
         """Format a string with given parameters.
@@ -187,6 +207,5 @@ class AssistantService:
         Returns:
             str: The formatted string
         """
-        # TODO additional logic may be added here,
-        # like providing common instructions for all agents to follow voice-specific guidelines
+        # This can be extended to provide common instructions or guidelines
         return text.format(**params)

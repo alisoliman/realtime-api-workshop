@@ -2,9 +2,6 @@
 import asyncio
 import websockets
 import json
-import sys
-import datetime
-import argparse
 from typing import Optional
 
 
@@ -22,80 +19,36 @@ class WebSocketClient:
 
                 # Pretty print different message types
                 if data["type"] == "welcome":
-                    print(f"\n🎉 {data['message']}")
-                elif data["type"] == "echo":
-                    print(f"\n📩 Echo received: {data['message']}")
+                    print(f"\n {data['message']}")
                 elif data["type"] == "game_update":
-                    # Print ball position updates (optional, commented out to reduce noise)
-                    # print(f"\r🎾 Ball position: x={data['position']['x']:.1f}, y={data['position']['y']:.1f}", end="")
-                    pass
-                elif data["type"] == "error":
-                    print(f"\n❌ Error: {data['message']}")
+                    print(
+                        f"\r Ball position: x={data['position']['x']:.1f}, y={data['position']['y']:.1f}",
+                        end="",
+                    )
 
         except websockets.exceptions.ConnectionClosed:
-            print("\n❌ Connection to server closed")
+            print("\n Connection to server closed")
         except Exception as e:
-            print(f"\n❌ Error: {str(e)}")
+            print(f"\n Error: {str(e)}")
 
-    async def send_message(self, message: str):
-        """Send a message to the server"""
+    async def connect(self):
+        """Connect to the WebSocket server"""
         try:
-            data = {
-                "message": message,
-                "timestamp": datetime.datetime.now().isoformat(),
-            }
-            await self.websocket.send(json.dumps(data))
-            print(f"\n📤 Sent: {message}")
+            self.websocket = await websockets.connect(self.uri)
+            print(f"\n Connected to {self.uri}")
+            await self.receive_messages()
         except Exception as e:
-            print(f"\n❌ Error sending message: {str(e)}")
-
-    async def interactive_session(self):
-        """Start an interactive WebSocket session"""
-        try:
-            async with websockets.connect(self.uri) as websocket:
-                self.websocket = websocket
-                print(f"🔌 Connected to {self.uri}")
-                print("📝 Type your messages (press Ctrl+C to exit)")
-
-                # Start receiving messages in the background
-                receive_task = asyncio.create_task(self.receive_messages())
-
-                while True:
-                    try:
-                        message = await asyncio.get_event_loop().run_in_executor(
-                            None, input, "\n✍️  Enter message: "
-                        )
-                        if message.strip():
-                            await self.send_message(message)
-                    except KeyboardInterrupt:
-                        print("\n👋 Goodbye!")
-                        break
-
-                receive_task.cancel()
-                try:
-                    await receive_task
-                except asyncio.CancelledError:
-                    pass
-
-        except Exception as e:
-            print(f"❌ Connection error: {str(e)}")
+            print(f"\n Connection error: {str(e)}")
 
 
-def main():
-    parser = argparse.ArgumentParser(description="WebSocket Client Example")
-    parser.add_argument(
-        "--uri",
-        default="ws://localhost:8765",
-        help="WebSocket server URI (default: ws://localhost:8765)",
-    )
-    args = parser.parse_args()
-
-    client = WebSocketClient(args.uri)
-    try:
-        asyncio.run(client.interactive_session())
-    except KeyboardInterrupt:
-        print("\n👋 Goodbye!")
+async def main():
+    """Main function to run the client"""
+    client = WebSocketClient()
+    await client.connect()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\n Goodbye!")
