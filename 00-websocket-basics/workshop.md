@@ -16,6 +16,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Then run the server directly (this will automatically install dependencies):
 ```bash
+cd 00-websocket-basics
 uv run server.py
 ```
 
