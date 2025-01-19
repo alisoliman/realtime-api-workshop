@@ -31,19 +31,22 @@ Choose one of the following methods to run the demo:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Then run the chat application directly:
+Then navigate to the workshop directory and run the chat application:
 ```bash
+cd 01-getting-started-function-calling
 uv run chainlit run chat.py
 ```
 
 ##### Option 2: Using pip
-1. Install dependencies:
+1. Install dependencies from the root folder of the repository:
    ```bash
+   # From the root folder of the repository
    pip install -r requirements.txt
    ```
 
-2. Start the chat application:
+2. Navigate to the workshop directory and start the chat application:
    ```bash
+   cd 01-getting-started-function-calling
    chainlit run chat.py
    ```
 

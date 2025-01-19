@@ -25,14 +25,22 @@ Choose your preferred installation method:
 
 ##### Option 1: Using uv (Recommended)
 ```bash
+cd 02-building-multi-agent-system
 uv run chainlit run chat.py
 ```
 
 ##### Option 2: Using pip
-```bash
-pip install -r requirements.txt
-chainlit run chat.py
-```
+1. Install dependencies from the root folder of the repository:
+   ```bash
+   # From the root folder of the repository
+   pip install -r requirements.txt
+   ```
+
+2. Navigate to the workshop directory and start the chat application:
+   ```bash
+   cd 02-building-multi-agent-system
+   chainlit run chat.py
+   ```
 
 ## Understanding Our Multi-Agent System
 
