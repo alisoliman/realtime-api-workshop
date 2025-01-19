@@ -1,128 +1,216 @@
 # Workshop: Building a Realtime Voice Assistant with Chainlit
 
-Welcome to our workshop on creating a **voice-enabled assistant** using [Chainlit](https://docs.chainlit.io/) and Azure OpenAI's Realtime API. The main goal is to show how to:
+Welcome to our workshop on creating a **voice-enabled assistant** using [Chainlit](https://docs.chainlit.io/) and Azure OpenAI's Realtime API. In this workshop, you'll learn how to build an AI assistant that can:
 - Accept **live audio** and **text** input from users
-- Integrate **Azure OpenAI** for conversational AI
-- Demonstrate **function calling** and **tool usage** in a practical setting
+- Provide real-time voice and text responses
+- Use tools to perform actions and gather information
 
-We'll walk through the key components of the workshop's codebase and highlight how each piece fits together. Note that there's a file called `realtime2.py` containing many low-level helper functions, which we won't go into detail about. It primarily deals with the underlying websocket connections, streaming audio, and conversation event handling.
+## Quick Start
 
-## Project Structure
+### Prerequisites
+- Azure OpenAI API access with real-time capabilities enabled
+- Python 3.8 or higher
 
-Below is a simplified layout of the main files you'll see in this workshop:
+### Setting Up
 
-```
-realtime-api-workshop/
-├── 01-getting-started-function-calling/  # Workshop folder for function calling examples
-│   ├── .env                                  # Azure OpenAI API keys and endpoint 
-│   ├── chat.py                          # Main application script
-│   ├── realtime2.py                     # Azure OpenAI realtime client implementation
-│   └── assistant_service.py             # Assistant management and tool handling
-```
-
-### `chat.py`
-This is the **main application file** demonstrating how to:
-1. **Initialize** Chainlit and create a user session
-2. **Set up** a realtime client (`RealtimeClient`) for audio input/output
-3. **Register** handlers for text messages and audio data
-4. **Route** user queries to the correct assistant tools or functions
-
-Chainlit callbacks (`@cl.on_chat_start`, `@cl.on_message`, etc.) manage the flow of user interactions. For example:
-- `@cl.on_message` handles **text** input
-- `@cl.on_audio_start`, `@cl.on_audio_chunk`, and `@cl.on_audio_end` handle **audio** streaming
-- `@cl.on_chat_end` and `@cl.on_stop` ensure that resources are properly cleaned up
-
-### `assistant_service.py`
-A dedicated service for managing AI assistants and their tools. While this service supports multiple agents, **for this workshop we'll focus on a single technical support agent**. Multi-agent scenarios will be explored in the `02-building-multi-agent-system` module.
-
-The service provides:
-- **Agent Management**: Registers and configures our technical support assistant
-- **Tool Registry**: Maintains the collection of tools our assistant can use
-- **Function Execution**: Handles the execution of tool functions and formats their responses
-
-For example, here's how we register our technical support assistant:
-```python
-assistant = {
-    "id": "tech_support",
-    "system_message": "You are a technical support agent...",
-    "tools": [{
-        "name": "check_service_status",
-        "description": "Check if a service is operational",
-        "parameters": {...},
-        "returns": lambda params: {"status": "operational"}
-    }]
-}
-service.register_agent(assistant)
+#### Environment Variables
+Create a `.env` file with your Azure OpenAI credentials:
+```bash
+AZURE_OPENAI_API_KEY=your_api_key
+AZURE_OPENAI_ENDPOINT=your_endpoint
+AZURE_OPENAI_DEPLOYMENT=your_deployment_name
 ```
 
-### `realtime2.py`
-Contains a **collection of helper classes and functions** for:
-- Managing WebSocket connections to Azure OpenAI's realtime endpoint
-- Handling event-based workflows (like `conversation.item.created`, `response.created`)
-- Audio processing (PCM16, float32 conversion)
-- Azure authentication and session management
+#### Installation
 
-## Key Concepts
+Choose one of the following methods to run the demo:
 
-1. **Realtime Client (`RealtimeClient`):**  
-   A specialized client that maintains a WebSocket connection, enabling:
-   - Bi-directional streaming of **audio** data (16-bit PCM format)
-   - **Event-driven** conversation updates
-   - Azure OpenAI authentication and session management
+##### Option 1: Using uv (Recommended)
+[uv](https://github.com/astral-sh/uv) is a fast Python package installer and runner. If you haven't installed it yet:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-2. **Chainlit Integration:**  
-   By using Chainlit's hooks (e.g., `@cl.on_chat_start`), we can:
-   - **Initialize** the realtime client as soon as a chat session starts
-   - **Pass** user's text or audio data to Azure OpenAI
-   - **Handle** responses (text and audio) in real time
+Then run the chat application directly:
+```bash
+uv run chainlit run chat.py
+```
 
-3. **Function Calling / Tools:**  
-   Assistants can call **tools** to perform tasks. For instance:
-   ```python
-   # Example tool definition
-   {
-       "name": "check_service_status",
-       "description": "Check if a service is operational",
-       "parameters": {
-           "type": "object",
-           "properties": {
-               "service": {
-                   "type": "string",
-                   "description": "Service to check (internet, mobile)"
-               }
-           }
-       }
-   }
+##### Option 2: Using pip
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
    ```
 
-## Workshop Flow
+2. Start the chat application:
+   ```bash
+   chainlit run chat.py
+   ```
 
-1. **User Connection:**  
-   When a participant opens the workshop UI, `uv run chainlit run chat.py` starts a local server. Users can type messages or speak into the microphone.
+The application will start on `http://localhost:8000` by default.
 
-2. **Message Handling:**  
-   - **Text Input**: Processed through the `on_message` callback
-   - **Audio Input**: Streamed as 16-bit PCM chunks, transcribed by Azure OpenAI
+## Understanding the Code
 
-3. **Assistant Response:**  
-   - The assistant provides responses in text or audio format
-   - Function calls are automatically handled when needed
-   - All responses are optimized for voice interaction
+The workshop code is organized into three main components:
 
-4. **Updates & Logging:**  
-   - Comprehensive event logging helps track conversation flow
-   - Debug messages available for troubleshooting
+### 1. Main Application (`chat.py`)
+The core of our application that:
+- Initializes Chainlit for the web interface
+- Sets up the realtime client for audio handling
+- Defines our technical support assistant and its tools
+- Manages the conversation flow
+
+Here's how we define our assistant's tools:
+```python
+main_assistant = {
+    "id": "tech_support",
+    "name": "Technical Support",
+    "description": "A technical support assistant that helps with service issues.",
+    "tools": [
+        {
+            "name": "check_usage",
+            "description": "Check customer's service usage data",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "customer_id": {"type": "string"}
+                },
+                "required": ["customer_id"]
+            }
+        },
+        {
+            "name": "check_service_status",
+            "description": "Check if there are any known service issues",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "service": {"type": "string"}
+                },
+                "required": ["service"]
+            }
+        }
+    ]
+}
+```
+
+### 2. Assistant Service (`assistant_service.py`)
+Manages our AI assistants and their tools:
+- Registers and configures assistants
+- Maintains the tool registry
+- Handles function execution
+
+### 3. Realtime Client (`realtime2.py`)
+Handles the low-level WebSocket functionality:
+- Manages connections to Azure OpenAI
+- Streams audio data
+- Processes conversation events
+
+## Hands-on Exercises
+
+### Exercise 1: Basic Voice Interaction
+Let's start by testing the voice capabilities:
+
+1. Start the application and open it in your browser
+2. Click the microphone button
+3. Try these queries:
+   ```
+   "Hello, can you help me with my internet connection?"
+   "What services can you help me with?"
+   "Can you check if there are any problems with the internet?"
+   ```
+4. Observe:
+   - Real-time speech transcription
+   - Natural voice responses
+   - Conversation context maintenance
+
+### Exercise 2: Testing Built-in Tools
+The assistant comes with two tools. Let's test them:
+
+1. Check Service Status:
+   ```
+   "Is there any problem with the internet service?"
+   "What's the status of the mobile network?"
+   ```
+
+2. Check Usage Data:
+   ```
+   "How much data have I used this month?"
+   "Am I close to my usage limit?"
+   ```
+
+3. Observe how the assistant:
+   - Automatically chooses when to use tools
+   - Incorporates tool responses naturally
+   - Maintains context between queries
+
+### Exercise 3: Add a Mobile Configuration Tool
+Let's add a tool that helps users configure their mobile devices for internet access:
+
+1. Open `chat.py` and find the `main_assistant` configuration
+2. Add this new tool to the `tools` list:
+```python
+{
+    "name": "get_mobile_internet_config",
+    "description": "Get instructions for configuring internet on a mobile device",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "device_type": {
+                "type": "string",
+                "description": "Type of mobile device",
+                "enum": ["iPhone", "Android"]
+            }
+        },
+        "required": ["device_type"]
+    },
+    "returns": lambda input: {
+        "steps": (
+            # iPhone configuration
+            ["Go to Settings", "Tap Cellular", "Enable Cellular Data", "Tap Cellular Data Options", "Enable 5G (if available)"]
+            if input["device_type"] == "iPhone"
+            # Android configuration
+            else ["Open Settings", "Tap Network & Internet", "Tap Mobile Network", "Enable Mobile Data", "Select Preferred Network Type"]
+        ),
+        "apn_settings": {
+            "name": "Internet",
+            "apn": "internet",
+            "proxy": "",
+            "port": "",
+            "type": "default,supl"
+        }
+    }
+}
+```
+
+3. Restart the application and try these queries:
+   ```
+   "How do I set up internet on my iPhone?"
+   "Can you help me configure my Android phone for mobile data?"
+   "What are the APN settings for my device?"
+   ```
+
+4. Notice how:
+   - The assistant provides device-specific instructions
+   - Configuration steps are clear and easy to follow
+   - Technical details like APN settings are included when relevant
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **No audio input/output**
+   - Check browser permissions for microphone access
+   - Verify audio device settings
+
+2. **Connection errors**
+   - Confirm Azure OpenAI credentials are correct
+   - Check internet connectivity
+   - Verify deployment name is valid
 
 ## Next Steps
 
-After exploring the code and seeing how everything works together, you'll have a foundation for:
-- **Adding new tools** for more complex tasks
-- **Switching** between different assistants (e.g., billing, sales)
-- **Scaling** the realtime approach for production
-- Experimenting with **audio streaming** and **voice generation**
-
----
-
-**Remember**: Most of the heavy lifting for streaming and event handling is encapsulated in `realtime2.py`, allowing you to focus on building your assistant's capabilities rather than dealing with low-level audio and WebSocket management.
-
-Enjoy the workshop!
+Now that you've built a voice-enabled AI assistant, you can:
+1. Add more tools to handle different scenarios
+2. Modify the system message to change the assistant's personality
+3. Experiment with different voice settings
+4. Explore the multi-agent system workshop to learn about agent collaboration
