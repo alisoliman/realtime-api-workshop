@@ -173,10 +173,7 @@ Let's add a tool that helps users configure their mobile devices for internet ac
         ),
         "apn_settings": {
             "name": "Internet",
-            "apn": "internet",
-            "proxy": "",
-            "port": "",
-            "type": "default,supl"
+            "apn": "internet"
         }
     }
 }
