@@ -6,7 +6,7 @@ Build voice-enabled AI assistants using Azure OpenAI's Realtime API. Create a mu
 
 | Module | Focus | Documentation |
 |--------|-------|---------------|
-| 1. WebSocket Basics | Real-time Communication Fundamentals | [Guide](./00-websocket-basics/README.md) |
+| 1. WebSocket Basics | Real-time Communication Fundamentals | [Guide](./00-websocket-basics/workshop.md) |
 | 2. Function Calling | Azure OpenAI Realtime API Integration | [Guide](./01-getting-started-function-calling/workshop.md) |
 | 3. Multi-Agent System | Customer Service Implementation | [Guide](./02-building-multi-agent-system/workshop.md) |
 | 4. Voice RAG | Voice-Optimized Document Retrieval | [Guide](./03-voice-rag/README.md) |
