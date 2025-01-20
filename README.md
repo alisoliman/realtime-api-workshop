@@ -4,22 +4,41 @@ Build voice-enabled AI assistants using Azure OpenAI's Realtime API. Create a mu
 
 ## Workshop Modules
 
-| Module | Focus | Documentation |
-|--------|-------|---------------|
-| 1. WebSocket Basics | Real-time Communication Fundamentals | [Guide](./00-websocket-basics/README.md) |
-| 2. Function Calling | Azure OpenAI Realtime API Integration | [Guide](./01-getting-started-function-calling/README.md) |
-| 3. Multi-Agent System | Customer Service Implementation | [Guide](./02-building-multi-agent-system/README.md) |
-| 4. Voice RAG | Voice-Optimized Document Retrieval | [Guide](./03-voice-rag/README.md) |
+| Module                | Focus                                 | Documentation                                            |
+| --------------------- | ------------------------------------- | -------------------------------------------------------- |
+| 1. WebSocket Basics   | Real-time Communication Fundamentals  | [Guide](./00-websocket-basics/README.md)                 |
+| 2. Function Calling   | Azure OpenAI Realtime API Integration | [Guide](./01-getting-started-function-calling/README.md) |
+| 3. Multi-Agent System | Customer Service Implementation       | [Guide](./02-building-multi-agent-system/README.md)      |
+| 4. Voice RAG          | Voice-Optimized Document Retrieval    | [Guide](./03-voice-rag/README.md)                        |
 
 ## Prerequisites
 
 - Python 3.8+
-- Azure OpenAI API key
+- Azure OpenAI, with gpt-4o-realtime-preview model
 
 ## Development Tools
 
 - **uv**: Fast Python package installer (recommended)
 - **Chainlit**: AI assistant development framework
+
+## Additional resources
+
+### SDKs & Libraries
+
+The following SDKs and libraries can be used to integrate with the gpt-4o-realtime-api (preview) on Azure.
+
+| SDK/Library                                                | Description                                            |
+| ---------------------------------------------------------- | ------------------------------------------------------ |
+| [`openai-python`](https://github.com/openai/openai-python) | The official Python library for the (Azure) OpenAI API |
+| [`openai-dotnet`](https://github.com/openai/openai-dotnet) | The official .NET library for the (Azure) OpenAI API   |
+
+### Accelerators & Templates
+
+| Accelerator                                                                                        | Description                                                                                                                                                                                   |
+| -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [VoiceRAG (aisearch-openai-rag-audio)](https://github.com/Azure-Samples/aisearch-openai-rag-audio) | A simple example implementation of the VoiceRAG pattern to power interactive voice generative AI experiences using RAG with Azure AI Search and Azure OpenAI's gpt-4o-realtime-preview model. |
+| [On The Road CoPilot](https://github.com/Azure-Samples/on-the-road-copilot)                        | A minimal speech-to-structured output app built with Azure OpenAI Realtime API.                                                                                                               |
+
 
 ## Contributing
 
