@@ -157,7 +157,8 @@ You can also adjust the tone and style of the responses by tweaking the prompt. 
 2. **Use Example Phrases**: Provide example phrases or sentences that reflect the desired tone.
 3. **Adjust for Specific Scenarios**: Tailor the prompt for different scenarios to ensure the model responds appropriately in various contexts.
 
-You can modify the prompt (also known as system message) in the `app/backend/app.py` file. Modify the `rtmt.system_message`.
+> [!TIP]
+> You can modify the prompt (also known as system message) in the `app/backend/app.py` file. Modify the `rtmt.system_message`.
 
 #### Exercise 1
 
