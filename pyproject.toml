@@ -5,21 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "aiortc>=1.9.0",
-    "flask-socketio>=5.5.1",
-    "flask>=3.1.0",
-    "rtclient",
-    "opencv-python>=4.10.0.84",
-    "o>=0.0.2b2",
-    "eventlet>=0.38.2",
     "websockets>=14.1",
-    "av>=12.3.0",
     "chainlit>=2.0.3",
-    "pydantic==2.10.1",
     "aiohttp>=3.11.11",
     "aiohttp-cors>=0.7.0",
     "azure-identity>=1.19.0",
+    "python-dotenv>=1.0.1",
+    "numpy>=2.2.2",
 ]
-
-[tool.uv.sources]
-rtclient = { url = "https://github.com/Azure-Samples/aoai-realtime-audio-sdk/releases/download/py%2Fv0.5.3/rtclient-0.5.3.tar.gz" }
