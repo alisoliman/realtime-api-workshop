@@ -20,14 +20,14 @@ You can also adjust the tone and style of the responses by tweaking the prompt. 
 
 ### Exercise 1
 
-1. Change the voice to better reflect your use-case. You can choose from [TODO]
+1. Change the voice and style to better reflect your use-case. You can change the voice by configuring the `AZURE_OPENAI_REALTIME_VOICE_CHOICE` environment variable. Current voice options are `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer` and `verse`. Can you make the voice style more formal and professional, you are building a voice first experience for a corporate use-case.
 
-    Which voice do you like the most?
+   Which voice do you like the most?
 
-2. Modify the prompt to be reply in easier language. Can your VoiceRAG solution explain the difficult concepts in a simpler way?
-3. Modify the prompt to only speak the languages you allow.
+2. Modify the prompt to reply in easier language to your end users. Can your VoiceRAG solution explain the difficult concepts in a simpler way? Since you are building a voice first experience, can you make the answers more conversational and concise?
 
-By carefully crafting your prompts, you can make the VoiceRAG model more effective and aligned with your specific use-case.
+3. Modify the prompt to always reply to the user in your language of choice. 
+
 
 ## Function calling
 
@@ -36,9 +36,12 @@ Exercise to improve the function calling. Explain how it currently works.
 TODO Highlight why grounding is more difficult in voice.
 TODO add concrete examples
 
+> [!TIP]
+> You can modify the tools (functions) in the `app/backend/ragtools.py` file. Modify the description of the tool and/or parameters.
+> 
 ### Exercise 2
 
-1. [todo]
+1. Your knowledge
 1. [todo]
 1. [todo]
 
