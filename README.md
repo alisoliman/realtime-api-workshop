@@ -11,15 +11,6 @@ Build voice-enabled AI assistants using Azure OpenAI's Realtime API. Create a mu
 | 3. Multi-Agent System | Customer Service Implementation       | [Guide](./02-building-multi-agent-system/README.md)      |
 | 4. Voice RAG          | Voice-Optimized Document Retrieval    | [Guide](./03-voice-rag/README.md)                        |
 
-## Prerequisites
-
-- Python 3.8+
-- Azure OpenAI, with gpt-4o-realtime-preview model
-
-## Development Tools
-
-- **uv**: Fast Python package installer (recommended)
-- **Chainlit**: AI assistant development framework
 
 ## Additional resources
 
