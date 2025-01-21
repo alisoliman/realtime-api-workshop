@@ -9,7 +9,7 @@ In this exercise, you will implement a RAG (Retrieval Augmented Generation) solu
 - Azure OpenAI
     - Real-time model: gpt-4o-realtime-preview
     - Embedding model: text-embeddings-ada-002 or text-embedding-003-large/text-embedding-003-small
-- Azure AI Search (with Semantic Ranker)
+- Azure AI Search
 - Azure Blob Storage
 - Development environment (_or leverage the preconfigured VSCode Dev Container_)
     - Python 3.9+
