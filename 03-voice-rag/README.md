@@ -28,7 +28,7 @@ In this step we will generate a vector index based on your own documents. If you
 1. Select Azure Blob Storage as the data source and select your storage account.
 1. Select your Azure OpenAI service and the embedding model you want to use.
 1. Don't select "Vectorize images" and "Extract text from images" for this exercise.
-1. Optionally you can change the schedule to your own preference, or leave it at "Once".
+1. Optionally you can change the schedule to your own preference, or leave it at "Once". If your region supports semantic ranker, you will see an option to enable semantic ranker. Keep this option enabled. 
 1. Change the name of your vector store to reflect your documents and select the "Create" button. Store the name of this vector store, as you will need this later.
 
 After a few minutes, your index will be populated with chunks and vectors from your documents. 
@@ -87,6 +87,11 @@ AZURE_OPENAI_ENDPOINT=https://<YOUR_OPENAI_ENDPOINT>.openai.azure.com
 AZURE_OPENAI_REALTIME_DEPLOYMENT=<YOUR_OPENAI_REALTIME_MODEL_DEPLOYMENT>
 AZURE_SEARCH_ENDPOINT=https://<YOUR_SEARCH_SERVICE>.search.windows.net
 AZURE_SEARCH_INDEX=<YOUR_INDEX_NAME>
+```
+
+If your region supports semantic ranker, you can add the following environment variable to enable semantic search for more relevant results:
+
+```
 AZURE_SEARCH_SEMANTIC_CONFIGURATION=<YOUR_INDEX_NAME>-semantic-configuration
 ```
 
