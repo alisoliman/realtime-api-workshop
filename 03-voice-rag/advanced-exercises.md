@@ -28,30 +28,27 @@ You can also adjust the tone and style of the responses by tweaking the prompt. 
 
 3. Modify the prompt to always reply to the user in your language of choice. 
 
-
-## Function calling
-
-Exercise to improve the function calling. Explain how it currently works.
-
-TODO Highlight why grounding is more difficult in voice.
-TODO add concrete examples
-
-> [!TIP]
-> You can modify the tools (functions) in the `app/backend/ragtools.py` file. Modify the description of the tool and/or parameters.
-> 
-### Exercise 2
-
-1. Your knowledge
-1. [todo]
-1. [todo]
-
-
 ## Modify the interface
 
 The text in this accelerator is translateable and can be modified by navigating to `/app/frontend/locales/en/translations.json`. Make sure to run to restart the application after making changes. 
 
 Navigate to `/app/frontend/src/App.tsx` to modify the interface and/or logic in code, knowledge of front-end development and React is required.
 
-### Exercise 3
+### Exercise 2
 
 1. Change the text "Ask anything about Contoso employee benefits" to "Ask anything about [your company's] [use-case]".
+
+## Function calling
+
+This accelerator uses two tools to generate responses. The first tool generates a query to search the knowledge base. The second tool reports which sources were used to generate the response.
+
+The purpose of this setup is to ensure that the interface displays the grounding of the response, and to make sure the voice response doesn't mention all output sources.
+
+> [!TIP]
+> You can modify the tools (functions) in the `app/backend/ragtools.py` file. Modify the description of the tool and/or parameters.
+> 
+### Exercise 3
+
+1. Review the tool schema for both tools. Can you add more information to the query generation tool to make it more accurate for your use-case?
+
+

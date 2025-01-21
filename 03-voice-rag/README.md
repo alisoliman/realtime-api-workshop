@@ -133,11 +133,11 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=<YOUR_INDEX_NAME>-semantic-configuration
 
 ### Troubleshooting
 - If you encounter any issues, please check the logs in the terminal where you started the app.
-- If you encounter any issues with speech recognition, please check if the right microphone is selected in your browser settings.
+- If you encounter any issues with speech recognition, please check if the right microphone is selected. Best is to set your preferred microphone as the default microphone in your OS system settings.
 - If you encounter any issues during the conversation, please restart the application. The conversation state is persisted within the memory and might cause issues.
 
 Great, now you have the sample up and running! This sample is a great starting point to build your own VoiceRAG solution. If you have more time, here are some advanced exercises to further tailor the accelerator to your needs:
 
 1. [Prompt Engineering](advanced-exercises.md#prompt-engineering)
-2. [Function Calling](advanced-exercises.md#function-calling)
-3. [Modify the interface](advanced-exercises.md#modify-the-interface)
+2. [Modify the interface](advanced-exercises.md#modify-the-interface)
+3. [Function Calling](advanced-exercises.md#function-calling)
