@@ -131,8 +131,10 @@ AZURE_SEARCH_SEMANTIC_CONFIGURATION=<YOUR_INDEX_NAME>-semantic-configuration
    Once the app is running, when you navigate to the URL above you should see the start screen of the app. To try out the app, click the "Start conversation button", say "Hello", and then ask a question about your data like "What are the perks at Contoso?" if you use the sample documents.
 
 
-<!-- ### Troubleshooting
-- [TODO document common mistakes] -->
+### Troubleshooting
+- If you encounter any issues, please check the logs in the terminal where you started the app.
+- If you encounter any issues with speech recognition, please check if the right microphone is selected in your browser settings.
+- If you encounter any issues during the conversation, please restart the application. The conversation state is persisted within the memory and might cause issues.
 
 Great, now you have the sample up and running! This sample is a great starting point to build your own VoiceRAG solution. If you have more time, here are some advanced exercises to further tailor the accelerator to your needs:
 
