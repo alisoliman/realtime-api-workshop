@@ -33,7 +33,7 @@ param model string = 'gpt-4o-realtime-preview'
 param modelversion string = '2024-12-17'
 
 @description('Capacity for specific model used')
-param capacity int = 6
+param capacity int = 30
 
 resource azopenaideployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
   parent: aiServices
