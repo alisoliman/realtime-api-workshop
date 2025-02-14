@@ -53,3 +53,4 @@ resource azopenaideployment 'Microsoft.CognitiveServices/accounts/deployments@20
 
 output aiservicesID string = aiServices.id
 output aiservicesTarget string = aiServices.properties.endpoint
+output deploymentName string = modeldeploymentname

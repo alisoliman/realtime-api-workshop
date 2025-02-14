@@ -74,3 +74,6 @@ module aiHub 'modules/ai_hub.bicep' = {
     aiServicesTarget: aiDependencies.outputs.aiservicesTarget
   }
 }
+
+output AZURE_OPENAI_ENDPOINT string = aiDependencies.outputs.aiservicesTarget
+output AZURE_OPENAI_DEPLOYMENT string = aiDependencies.outputs.deploymentName
