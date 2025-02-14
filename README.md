@@ -12,6 +12,13 @@ Build voice-enabled AI assistants using Azure OpenAI's Realtime API. Create a mu
 | 4. Voice RAG          | Voice-Optimized Document Retrieval    | [Guide](./03-voice-rag/README.md)                        |
 
 
+## Setup
+1. Execute ``azd up`` from the root folder.
+2. The above command will setup your python env, provision Azure AI foundry Hub, Project and GPT4o-realtime-audio instance and will initialize .env file.
+3. Update the .env with the API Key of GPT4o-realtime-audio model. You can find the key in Azure portal
+4. Move to respective modules to further run/work on the workshop modules.
+
+
 ## Additional resources
 
 ### SDKs & Libraries

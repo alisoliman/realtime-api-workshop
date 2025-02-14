@@ -27,7 +27,7 @@ uv run -m http.server 8000
 ```
 
 #### Option 2: Using pip
-1. Install dependencies:
+1. Install dependencies: (Skip this step if you have done azd up from the root folder)
    ```bash
    pip install -r requirements.txt
    ```
