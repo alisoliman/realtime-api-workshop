@@ -4,3 +4,4 @@
 .chainlit
 .files
 __pycache__
+.azure

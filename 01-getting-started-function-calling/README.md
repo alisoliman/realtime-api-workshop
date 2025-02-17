@@ -38,7 +38,7 @@ uv run chainlit run chat.py
 ```
 
 ##### Option 2: Using pip
-1. Install dependencies from the root folder of the repository:
+1. Install dependencies from the root folder of the repository: (Skip this step if you have done azd up from the root folder)
    ```bash
    # From the root folder of the repository
    pip install -r requirements.txt
